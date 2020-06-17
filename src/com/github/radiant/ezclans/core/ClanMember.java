@@ -90,6 +90,18 @@ public class ClanMember implements Cloneable, ConfigurationSerializable {
 	public boolean isLeader() {
 		return status.equals("leader");
 	}
+	
+	public boolean isModerator() {
+		return this.status.equals("moderator");
+	}
+	
+	public void setModerator() {
+		this.status = "moderator";
+	}
+	
+	public void setMember() {
+		this.status = "member";
+	}
 
 	@Override
 	public Map<String, Object> serialize() {

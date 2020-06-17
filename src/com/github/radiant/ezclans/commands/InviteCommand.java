@@ -32,8 +32,8 @@ public class InviteCommand extends ACommand {
 		if (member == null) {
 			throw new CommandException(Lang.getLang("not_in_clan"));
 		}
-		if (!member.isLeader()) {
-			throw new CommandException(Lang.getLang("not_leader"));
+		if (!member.isLeader() && !member.isModerator()) {
+			throw new CommandException(Lang.getLang("not_leader_or_moderator"));
 		}
 		String toInvite = args[1];
 		Player invitedPlayer = Bukkit.getServer().getPlayer(toInvite);
@@ -48,7 +48,7 @@ public class InviteCommand extends ACommand {
 		if (invitedMember != null) {
 			throw new CommandException(Lang.getLang("already_in_clan_other"));
 		}
-		Pendings.setInvitePending(invitedPlayer.getUniqueId(), currentClan);
+		Pendings.setInvitePending(invitedPlayer.getUniqueId(), currentClan.getId());
 		p.sendMessage(String.format(Lang.getLang("ivitation_sent"), Lang.colorString(toInvite)));
 		invitedPlayer.sendMessage(String.format(Lang.getLang("invited_to_clan"), Lang.colorString(currentClan.getName())));
 		return false;

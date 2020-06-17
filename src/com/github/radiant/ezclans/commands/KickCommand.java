@@ -30,8 +30,8 @@ public class KickCommand extends ACommand{
 		if (member == null) {
 			throw new CommandException(Lang.getLang("not_in_clan"));
 		}
-		if (!member.isLeader()) {
-			throw new CommandException(Lang.getLang("not_leader"));
+		if (!member.isLeader() && !member.isModerator()) {
+			throw new CommandException(Lang.getLang("not_leader_or_moderator"));
 		}
 		String toKick = args[1];
 		ClanMember kicked = member.getClan().getMemberByName(toKick);
@@ -41,13 +41,15 @@ public class KickCommand extends ACommand{
 		if (p.getUniqueId().equals(kicked.getUuid())) {
 			throw new CommandException(Lang.getLang("kick_yourself"));
 		}
+		if (member.isModerator() && (kicked.isModerator() || kicked.isLeader())) {
+			throw new CommandException(Lang.getLang("kick_not_enough"));
+		}
 		if (member.getClan().removeMember(kicked)) {
 			Player kickedPlayer = Bukkit.getServer().getPlayer(kicked.getUuid());
 			if (kickedPlayer.isOnline()) {
 				kickedPlayer.sendMessage(String.format(Lang.getLang("kicked_you"), Lang.colorString(member.getClan().getName())));
-				member.getClan().clanMessage(String.format(Lang.getLang("kick_msg"), kicked.getName()));
 			}
-			p.sendMessage(String.format(Lang.getLang("kicked_other"), Lang.colorString(kicked.getName())));
+			member.getClan().clanMessage(String.format(Lang.getLang("kick_msg"), kicked.getName()));
 		}
 		
 		return false;

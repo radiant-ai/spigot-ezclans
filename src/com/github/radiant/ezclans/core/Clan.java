@@ -144,7 +144,14 @@ public class Clan implements Cloneable, ConfigurationSerializable {
 	public String getMemberList() {
 		String result = "";
 		for (ClanMember cm : members) {
-			result+=cm.getName()+" ";
+			String color = "&r";
+			if (cm.isLeader()) {
+				color = "&a&l";
+			}
+			else if (cm.isModerator()) {
+				color = "&a";
+			}
+			result+=color+cm.getName()+"&r ";
 		}
 		return result;
 	}

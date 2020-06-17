@@ -30,8 +30,8 @@ public class SettagCommand extends ACommand {
 		if (member == null) {
 			throw new CommandException(Lang.getLang("not_in_clan"));
 		}
-		if (!member.isLeader()) {
-			throw new CommandException(Lang.getLang("not_leader"));
+		if (!member.isLeader() && !member.isModerator()) {
+			throw new CommandException(Lang.getLang("not_leader_or_moderator"));
 		}
 		String clanTag = "";
 		for (int i = 1; i < args.length; i++) {
@@ -42,7 +42,7 @@ public class SettagCommand extends ACommand {
 			throw new CommandException(Lang.getLang("illegal_tag"));
 		}
 		member.getClan().setTag(clanTag);
-		p.sendMessage(String.format(Lang.getLang("tag_changed"), Lang.colorString(clanTag)));
+		member.getClan().clanMessage(String.format(Lang.getLang("tag_changed"), Lang.colorString(clanTag)));
 		
 		return false;
 	}

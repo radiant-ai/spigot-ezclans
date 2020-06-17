@@ -119,7 +119,7 @@ public class Clans {
 		p.sendMessage(String.format(Lang.getLang("clan_leader"), clan.getLeader().getName()));
 		p.sendMessage(String.format(Lang.getLang("clan_balance"), "0.00"));
 		p.sendMessage(String.format(Lang.getLang("clan_size"), Integer.toString(clan.clanSize())));
-		p.sendMessage(Lang.getLang("clan_members")+" "+clan.getMemberList());
+		p.sendMessage(Lang.getLang("clan_members")+" "+Lang.colorString(clan.getMemberList()));
 	}
 	
 	public static void msgInfoLeader(Clan clan, Player p) {
@@ -129,7 +129,7 @@ public class Clans {
 		p.sendMessage(String.format(Lang.getLang("clan_leader"), clan.getLeader().getName()));
 		p.sendMessage(String.format(Lang.getLang("clan_balance"), "0.00"));
 		p.sendMessage(String.format(Lang.getLang("clan_size"), Integer.toString(clan.clanSize())));
-		p.sendMessage(Lang.getLang("clan_members")+" "+clan.getMemberList());
+		p.sendMessage(Lang.getLang("clan_members")+" "+Lang.colorString(clan.getMemberList()));
 	}
 	
 	public static int clanNumber() {

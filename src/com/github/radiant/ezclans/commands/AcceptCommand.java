@@ -1,5 +1,7 @@
 package com.github.radiant.ezclans.commands;
 
+import java.util.UUID;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -25,12 +27,13 @@ public class AcceptCommand extends ACommand {
 			throw new CommandException(Lang.getLang("must_be_player"));
 		}
 		Player p = (Player) sender;
-		Clan toAccept = Pendings.getInvitePending(p.getUniqueId());
-		if (toAccept == null) {
+		UUID toAcceptId = Pendings.getInvitePending(p.getUniqueId());
+		if (toAcceptId == null) {
 			throw new CommandException(Lang.getLang("no_invites"));
 		}
 		Pendings.removeInvitePending(p.getUniqueId());
-		if (toAccept.isDisbanded()) {
+		Clan toAccept = Clans.getClan(toAcceptId);
+		if (toAccept == null) {
 			throw new CommandException(Lang.getLang("accept_disbanded"));
 		}
 		ClanMember member = Clans.getMember(p.getUniqueId());

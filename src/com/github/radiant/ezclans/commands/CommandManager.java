@@ -32,6 +32,9 @@ public class CommandManager {
 		commands.put("pvp", PvpCommand.class);
 		commands.put("help", HelpCommand.class);
 		commands.put("list", ListCommand.class);
+		commands.put("promote", SetmoderatorCommand.class);
+		commands.put("demote", RemovemoderatorCommand.class);
+		commands.put("setleader", SetleaderCommand.class);
 	}
 	
 	private static ACommand factory(String label, CommandSender sender, String[] args) {
