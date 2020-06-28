@@ -11,6 +11,7 @@ import com.github.radiant.ezclans.core.ClanMember;
 import com.github.radiant.ezclans.core.Clans;
 import com.github.radiant.ezclans.db.DBYml;
 import com.github.radiant.ezclans.db.IDBConnector;
+import com.github.radiant.ezclans.events.ChatEvent;
 import com.github.radiant.ezclans.events.PlayerMove;
 import com.github.radiant.ezclans.events.PvpEvent;
 import com.github.radiant.ezclans.integrations.ClanTabCompleter;
@@ -51,6 +52,7 @@ public class EzClans extends JavaPlugin {
 	private void registerEvents() {
 		getServer().getPluginManager().registerEvents(new PlayerMove(), this);
 		getServer().getPluginManager().registerEvents(new PvpEvent(), this);
+		getServer().getPluginManager().registerEvents(new ChatEvent(this), this);
 	}
 	
 	private void loadConfigs() {

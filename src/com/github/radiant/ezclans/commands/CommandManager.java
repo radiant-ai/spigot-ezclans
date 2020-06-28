@@ -78,7 +78,7 @@ public class CommandManager {
 	
 	public static boolean legalTag(String name) {
 		if (stripColor(name).length() <= 20) {
-			if (name.matches("[\\wà-ÿÀ-ß\"\'\\-¸¨ &]+")) {
+			if (name.matches("[\\wà-ÿÀ-ß\"\'\\-¸¨ &\u0021-\uFFFC]+")) {
 				return true;
 			}
 		}
