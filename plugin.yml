@@ -1,0 +1,11 @@
+main: com.github.radiant.ezclans.EzClans
+version: 0.1
+name: EzClans
+author: Radiant
+api-version: 1.13
+depend: [Vault, PlaceholderAPI]
+
+commands:
+   clan:
+      aliases: [c]
+      description: Main command for EzClans.
