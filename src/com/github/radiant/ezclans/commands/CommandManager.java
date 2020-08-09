@@ -35,6 +35,7 @@ public class CommandManager {
 		commands.put("promote", SetmoderatorCommand.class);
 		commands.put("demote", RemovemoderatorCommand.class);
 		commands.put("setleader", SetleaderCommand.class);
+		commands.put("storage", StorageCommand.class);
 	}
 	
 	private static ACommand factory(String label, CommandSender sender, String[] args) {

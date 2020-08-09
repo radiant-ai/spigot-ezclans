@@ -46,7 +46,7 @@ public class KickCommand extends ACommand{
 		}
 		if (member.getClan().removeMember(kicked)) {
 			Player kickedPlayer = Bukkit.getServer().getPlayer(kicked.getUuid());
-			if (kickedPlayer.isOnline()) {
+			if (kickedPlayer!=null && kickedPlayer.isOnline()) {
 				kickedPlayer.sendMessage(String.format(Lang.getLang("kicked_you"), Lang.colorString(member.getClan().getName())));
 			}
 			member.getClan().clanMessage(String.format(Lang.getLang("kick_msg"), kicked.getName()));

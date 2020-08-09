@@ -1,5 +1,6 @@
 package com.github.radiant.ezclans.core;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -9,11 +10,15 @@ import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.SerializableAs;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 import com.github.radiant.ezclans.lang.Lang;
+import com.github.radiant.ezclans.utils.InventoryUtils;
 
 @SerializableAs("Clan")
 public class Clan implements Cloneable, ConfigurationSerializable {
@@ -25,6 +30,9 @@ public class Clan implements Cloneable, ConfigurationSerializable {
 	private final Date creationDate;
 	private Location home;
 	private boolean disbanded;
+	private double bank;
+	private int level;
+	private Inventory storage;
 	
 	public Clan(String name) {
 		super();
@@ -36,9 +44,12 @@ public class Clan implements Cloneable, ConfigurationSerializable {
 		this.creationDate = new Date();
 		this.home = null;
 		this.disbanded = false;
+		this.bank = 0;
+		this.level = 1;
+		this.storage = Bukkit.createInventory(null, 9, "Clan storage");
 	}
 
-	public Clan(UUID id, String name, String tag, List<ClanMember> members, ClanMember leader, Date creationDate, Location home) {
+	public Clan(UUID id, String name, String tag, List<ClanMember> members, ClanMember leader, Date creationDate, Location home, double bank, int level, Inventory storage) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -53,6 +64,9 @@ public class Clan implements Cloneable, ConfigurationSerializable {
 		this.creationDate = creationDate;
 		this.home = home;
 		this.disbanded = false;
+		this.bank = bank;
+		this.level = level;
+		this.storage = storage;
 	}
 
 	public String getName() {
@@ -141,6 +155,26 @@ public class Clan implements Cloneable, ConfigurationSerializable {
 		this.disbanded = disbanded;
 	}
 	
+	public double getBank() {
+		return bank;
+	}
+
+	public void setBank(double bank) {
+		this.bank = bank;
+	}
+
+	public int getLevel() {
+		return level;
+	}
+
+	public void setLevel(int level) {
+		this.level = level;
+	}
+
+	public Inventory getStorage() {
+		return storage;
+	}
+
 	public String getMemberList() {
 		String result = "";
 		for (ClanMember cm : members) {
@@ -192,6 +226,14 @@ public class Clan implements Cloneable, ConfigurationSerializable {
 		result.put("leader", leader.getUuid().toString());
 		result.put("creationdate", ""+creationDate.getTime());
 		result.put("home", home==null ? "null" : home);
+		ItemStack[] stacks = storage.getContents();
+		for (int i = 0; i < stacks.length; i++) {
+			if (!InventoryUtils.testSavable(stacks[i])) {
+				stacks[i] = null;
+				storage.setItem(i, null);
+			}
+		}
+		result.put("storage",stacks);
 		return result;
 	}
 	
@@ -209,7 +251,12 @@ public class Clan implements Cloneable, ConfigurationSerializable {
 		if (home_o instanceof Location) {
 			clanHome = (Location) home_o;
 		}
-		Clan result = new Clan(uuid, n, t, null, null, date, clanHome);
+		Inventory inv = Bukkit.createInventory(null, 9, "Clan storage");
+		ArrayList<ItemStack> stacks = (ArrayList<ItemStack>) map.get("storage");
+		for (int i = 0; i<stacks.size(); i++) {
+			inv.setItem(i, stacks.get(i));
+		}
+		Clan result = new Clan(uuid, n, t, null, null, date, clanHome, 0.0, 1, inv);
 		ClanMember leaderMember = null;
 		for (Map<String, Object> m : mapMembers) {
 			ClanMember mem = ClanMember.deserialize(m, result);

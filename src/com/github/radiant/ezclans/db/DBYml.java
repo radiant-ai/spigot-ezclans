@@ -25,7 +25,7 @@ public class DBYml implements IDBConnector {
 	public DBYml(EzClans plugin) {
 		clans = new CustomConfig(plugin, "clans.yml");
 		clans.reloadCustomConfig();
-		clans.scheduleBackup(36000, 36000);
+		clans.scheduleBackup(1000, 1000);
 	}
 
 	@Override

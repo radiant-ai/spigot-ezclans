@@ -63,7 +63,7 @@ public class EzPlaceholder extends PlaceholderExpansion {
 				return Lang.colorString(clan.getName());
 			}
 			else {
-				return "no_clan";
+				return "";
 			}
         }
 
@@ -75,7 +75,7 @@ public class EzPlaceholder extends PlaceholderExpansion {
 				return Lang.colorString(clan.getTag());
 			}
 			else {
-				return "no_clan";
+				return "";
 			}
 	    }
         
