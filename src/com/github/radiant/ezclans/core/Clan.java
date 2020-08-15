@@ -30,7 +30,7 @@ public class Clan implements Cloneable, ConfigurationSerializable {
 	private final Date creationDate;
 	private Location home;
 	private boolean disbanded;
-	private double bank;
+	private int bank;
 	private int level;
 	private Inventory storage;
 	
@@ -49,7 +49,7 @@ public class Clan implements Cloneable, ConfigurationSerializable {
 		this.storage = Bukkit.createInventory(null, 9, "Clan storage");
 	}
 
-	public Clan(UUID id, String name, String tag, List<ClanMember> members, ClanMember leader, Date creationDate, Location home, double bank, int level, Inventory storage) {
+	public Clan(UUID id, String name, String tag, List<ClanMember> members, ClanMember leader, Date creationDate, Location home, int bank, int level, Inventory storage) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -155,12 +155,25 @@ public class Clan implements Cloneable, ConfigurationSerializable {
 		this.disbanded = disbanded;
 	}
 	
-	public double getBank() {
+	public int getBank() {
 		return bank;
 	}
 
-	public void setBank(double bank) {
+	public void setBank(int bank) {
 		this.bank = bank;
+	}
+	
+	public void withdraw(int amt) {
+		if (amt > bank) {
+			bank = 0;
+		}
+		else {
+			bank = bank - amt;
+		}
+	}
+	
+	public void deposit(int amt) {
+		bank = bank + amt;
 	}
 
 	public int getLevel() {
@@ -226,6 +239,7 @@ public class Clan implements Cloneable, ConfigurationSerializable {
 		result.put("leader", leader.getUuid().toString());
 		result.put("creationdate", ""+creationDate.getTime());
 		result.put("home", home==null ? "null" : home);
+		result.put("bank", ""+bank);
 		ItemStack[] stacks = storage.getContents();
 		for (int i = 0; i < stacks.length; i++) {
 			if (!InventoryUtils.testSavable(stacks[i])) {
@@ -243,6 +257,14 @@ public class Clan implements Cloneable, ConfigurationSerializable {
 		String t = (String) map.get("tag");
 		Date date = new Date(Long.parseLong((String) map.get("creationdate")));
 		UUID leaderUUID = UUID.fromString((String) map.get("leader"));
+		
+		int bank = 0;
+		Object bankRaw = map.get("bank");
+		if (bankRaw!=null) {
+			bank = Integer.parseInt((String) bankRaw);
+		}
+		
+		
 		@SuppressWarnings("unchecked")
 		List<Map<String, Object>> mapMembers = (List<Map<String, Object>>) map.get("members");
 		List<ClanMember> memberList = new ArrayList<ClanMember>();
@@ -256,7 +278,7 @@ public class Clan implements Cloneable, ConfigurationSerializable {
 		for (int i = 0; i<stacks.size(); i++) {
 			inv.setItem(i, stacks.get(i));
 		}
-		Clan result = new Clan(uuid, n, t, null, null, date, clanHome, 0.0, 1, inv);
+		Clan result = new Clan(uuid, n, t, null, null, date, clanHome, bank, 1, inv);
 		ClanMember leaderMember = null;
 		for (Map<String, Object> m : mapMembers) {
 			ClanMember mem = ClanMember.deserialize(m, result);

@@ -12,7 +12,10 @@ public class ClanCommandExecutor implements CommandExecutor {
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		try {
-			ACommand command = CommandManager.createCommand(sender, args);
+			if (label.equals("c")) {
+				label = "clan";
+			}
+			ACommand command = CommandManager.createCommand(label, sender, args);
 			if (command != null) {
 				command.execute();
 			}

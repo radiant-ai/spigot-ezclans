@@ -15,29 +15,31 @@ public class ClanTabCompleter implements TabCompleter {
 	
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args) {
-		if ((cmd.getName().equalsIgnoreCase("clan") || cmd.getName().equalsIgnoreCase("c")) && args.length > 0 && sender instanceof Player) {
-			List<String> list = CommandManager.getCommandList();
-			if (args.length == 1) { //handle subcommand
-				if (args[0].isEmpty()) {
-					return list;
-				}
-				else {
-					List<String> newList = new LinkedList<String>();
-					for (String s : list) {
-						if (s.startsWith(args[0])) {
-							newList.add(s);
-						}
-					}
-					return newList;
-				}
-			}
-			else if (args.length == 2) {
-				if (args[0].equals("info")) { //handle info
-					if (args[1].isEmpty()) {
-						return Clans.getClanNames("");
+		if (args.length > 0 && sender instanceof Player) {
+			List<String> list = CommandManager.getCommandList(cmd.getName());
+			if (list.size()>0) {
+				if (args.length == 1) { //handle subcommand
+					if (args[0].isEmpty()) {
+						return list;
 					}
 					else {
-						return Clans.getClanNames(args[1]);
+						List<String> newList = new LinkedList<String>();
+						for (String s : list) {
+							if (s.startsWith(args[0])) {
+								newList.add(s);
+							}
+						}
+						return newList;
+					}
+				}
+				else if (args.length == 2) {
+					if (args[0].equals("info")) { //handle info
+						if (args[1].isEmpty()) {
+							return Clans.getClanNames("");
+						}
+						else {
+							return Clans.getClanNames(args[1]);
+						}
 					}
 				}
 			}

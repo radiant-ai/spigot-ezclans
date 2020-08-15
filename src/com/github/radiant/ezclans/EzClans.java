@@ -18,6 +18,7 @@ import com.github.radiant.ezclans.integrations.ClanTabCompleter;
 import com.github.radiant.ezclans.integrations.EzEconomy;
 import com.github.radiant.ezclans.integrations.EzPlaceholder;
 import com.github.radiant.ezclans.lang.Lang;
+import com.github.radiant.ezclans.logs.EzLogs;
 
 public class EzClans extends JavaPlugin {
 	public static IDBConnector db;
@@ -37,16 +38,20 @@ public class EzClans extends JavaPlugin {
 		loadDB();
 		Lang.initialize(this);
 		CommandManager.initialize(this);
+		EzLogs.initialize(this);
 		registerEvents();
 	}
 	
 	public void onDisable() {
+		EzLogs.flush();
 		db.saveClans(Clans.clans);
 	}
 	
 	private void registerCommands() {
 		this.getCommand("clan").setExecutor(new ClanCommandExecutor());
+		this.getCommand("clanadmin").setExecutor(new ClanCommandExecutor());
 		this.getCommand("clan").setTabCompleter(new ClanTabCompleter());
+		this.getCommand("clanadmin").setTabCompleter(new ClanTabCompleter());
 	}
 	
 	private void registerEvents() {

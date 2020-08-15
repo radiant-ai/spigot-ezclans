@@ -1,4 +1,4 @@
-package com.github.radiant.ezclans.commands;
+package com.github.radiant.ezclans.commands.player;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -6,6 +6,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.github.radiant.ezclans.EzClans;
+import com.github.radiant.ezclans.commands.ACommand;
+import com.github.radiant.ezclans.commands.CommandException;
 import com.github.radiant.ezclans.core.ClanMember;
 import com.github.radiant.ezclans.core.Clans;
 import com.github.radiant.ezclans.core.HomeTask;

@@ -29,5 +29,9 @@ public class EzEconomy {
 	public static void withdraw(Player p, double amt) {
 		econ.withdrawPlayer(p, amt);
 	}
+	
+	public static void pay(Player p, double amt) {
+		econ.depositPlayer(p, amt);
+	}
 
 }

@@ -1,8 +1,10 @@
-package com.github.radiant.ezclans.commands;
+package com.github.radiant.ezclans.commands.player;
 
 import org.bukkit.command.CommandSender;
 
 import com.github.radiant.ezclans.EzClans;
+import com.github.radiant.ezclans.commands.ACommand;
+import com.github.radiant.ezclans.commands.CommandException;
 import com.github.radiant.ezclans.lang.Lang;
 
 public class HelpCommand extends ACommand {

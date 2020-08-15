@@ -6,40 +6,68 @@ import java.util.List;
 import java.util.Map;
 
 import org.bukkit.ChatColor;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 import com.github.radiant.ezclans.EzClans;
+import com.github.radiant.ezclans.commands.player.AcceptCommand;
+import com.github.radiant.ezclans.commands.player.BalanceCommand;
+import com.github.radiant.ezclans.commands.player.ChatCommand;
+import com.github.radiant.ezclans.commands.player.CreateCommand;
+import com.github.radiant.ezclans.commands.player.DisbandCommand;
+import com.github.radiant.ezclans.commands.player.HelpCommand;
+import com.github.radiant.ezclans.commands.player.HomeCommand;
+import com.github.radiant.ezclans.commands.player.InfoCommand;
+import com.github.radiant.ezclans.commands.player.InviteCommand;
+import com.github.radiant.ezclans.commands.player.KickCommand;
+import com.github.radiant.ezclans.commands.player.LeaveCommand;
+import com.github.radiant.ezclans.commands.player.ListCommand;
+import com.github.radiant.ezclans.commands.player.PvpCommand;
+import com.github.radiant.ezclans.commands.player.RemovemoderatorCommand;
+import com.github.radiant.ezclans.commands.player.RenameCommand;
+import com.github.radiant.ezclans.commands.player.SethomeCommand;
+import com.github.radiant.ezclans.commands.player.SetleaderCommand;
+import com.github.radiant.ezclans.commands.player.SetmoderatorCommand;
+import com.github.radiant.ezclans.commands.player.SettagCommand;
+import com.github.radiant.ezclans.commands.player.StorageCommand;
 
 public class CommandManager {
 	
 	private static EzClans plugin = null;
-	private static Map<String, Class<? extends ACommand>> commands = new HashMap<String, Class<? extends ACommand>>();
+	private static Map<String, Map<String, Class<? extends ACommand>>> commands = new HashMap<String, Map<String, Class<? extends ACommand>>>();
 	
 	public static void initialize(EzClans p) {
 		plugin = p;
-		commands.put("create", CreateCommand.class);
-		commands.put("info", InfoCommand.class);
-		commands.put("disband", DisbandCommand.class);
-		commands.put("sethome", SethomeCommand.class);
-		commands.put("home", HomeCommand.class);
-		commands.put("settag", SettagCommand.class);
-		commands.put("invite", InviteCommand.class);
-		commands.put("accept", AcceptCommand.class);
-		commands.put("rename", RenameCommand.class);
-		commands.put("leave", LeaveCommand.class);
-		commands.put("kick", KickCommand.class);
-		commands.put("chat", ChatCommand.class);
-		commands.put("pvp", PvpCommand.class);
-		commands.put("help", HelpCommand.class);
-		commands.put("list", ListCommand.class);
-		commands.put("promote", SetmoderatorCommand.class);
-		commands.put("demote", RemovemoderatorCommand.class);
-		commands.put("setleader", SetleaderCommand.class);
-		commands.put("storage", StorageCommand.class);
+		Map<String, Class<? extends ACommand>> pcommands = new HashMap<String, Class<? extends ACommand>>();
+		Map<String, Class<? extends ACommand>> acommands = new HashMap<String, Class<? extends ACommand>>();
+		pcommands.put("create", CreateCommand.class);
+		pcommands.put("info", InfoCommand.class);
+		pcommands.put("disband", DisbandCommand.class);
+		pcommands.put("sethome", SethomeCommand.class);
+		pcommands.put("home", HomeCommand.class);
+		pcommands.put("settag", SettagCommand.class);
+		pcommands.put("invite", InviteCommand.class);
+		pcommands.put("accept", AcceptCommand.class);
+		pcommands.put("rename", RenameCommand.class);
+		pcommands.put("leave", LeaveCommand.class);
+		pcommands.put("kick", KickCommand.class);
+		pcommands.put("chat", ChatCommand.class);
+		pcommands.put("pvp", PvpCommand.class);
+		pcommands.put("help", HelpCommand.class);
+		pcommands.put("list", ListCommand.class);
+		pcommands.put("promote", SetmoderatorCommand.class);
+		pcommands.put("demote", RemovemoderatorCommand.class);
+		pcommands.put("setleader", SetleaderCommand.class);
+		pcommands.put("storage", StorageCommand.class);
+		pcommands.put("balance", BalanceCommand.class);
+		commands.put("clan", pcommands);
 	}
 	
-	private static ACommand factory(String label, CommandSender sender, String[] args) {
-		Class<? extends ACommand> cmdClass = commands.get(label);
+	private static ACommand factory(String label, String cmdName, CommandSender sender, String[] args) {
+		Map<String, Class<? extends ACommand>> mapSet = commands.get(label);
+		if (mapSet==null)
+			return null;
+		Class<? extends ACommand> cmdClass = mapSet.get(cmdName);
 		if (cmdClass==null)
 			return null;
 		try {
@@ -52,16 +80,22 @@ public class CommandManager {
 		}
 	}
 	
-	public static List<String> getCommandList() {
+	public static List<String> getCommandList(String command) {
+		if (command.equals("c")) {
+			command = "clan";
+		}
 		List<String> result = new ArrayList<String>();
-		result.addAll(commands.keySet());
+		Map<String, Class<? extends ACommand>> mapSet = commands.get(command);
+		if (mapSet!=null) {
+			result.addAll(mapSet.keySet());
+		}
 		return result;
 	}
 	
-	public static ACommand createCommand(CommandSender sender, String[] args) throws Exception {
+	public static ACommand createCommand(String label, CommandSender sender, String[] args) throws Exception {
 		if (args.length > 0) {
 			String name = args[0];
-			ACommand cmd = factory(name, sender, args);
+			ACommand cmd = factory(label, name, sender, args);
 			return cmd;
 		}
 		else {

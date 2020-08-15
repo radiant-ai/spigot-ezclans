@@ -1,35 +1,33 @@
-package com.github.radiant.ezclans.commands;
+package com.github.radiant.ezclans.commands.player;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.github.radiant.ezclans.EzClans;
+import com.github.radiant.ezclans.commands.ACommand;
+import com.github.radiant.ezclans.commands.CommandException;
 import com.github.radiant.ezclans.core.ClanMember;
 import com.github.radiant.ezclans.core.Clans;
 import com.github.radiant.ezclans.lang.Lang;
 
-public class StorageCommand extends ACommand {
-	
+public class ListCommand extends ACommand {
 	protected static final boolean consoleExecutable = false;
 
-	public StorageCommand(CommandSender sender, String[] args, EzClans plugin) {
+	public ListCommand(CommandSender sender, String[] args, EzClans plugin) {
 		super(sender, args, plugin);
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public boolean execute() throws Exception {
-		if (!consoleExecutable && !(sender instanceof Player)) {
-			throw new CommandException(Lang.getLang("must_be_player"));
+		int page = 1;
+		if (args.length > 1) {
+			try {
+				page = Integer.parseInt(args[1]);
+			}
+			catch (Exception e) {}
 		}
-		Player p = (Player) sender;
-		ClanMember member = Clans.getMember(p.getUniqueId());
-		if (member == null) {
-			throw new CommandException(Lang.getLang("not_in_clan"));
-		}
-		
-		p.openInventory(member.getClan().getStorage());
-		
+		Clans.sendClanList(sender, page);
 		return false;
 	}
 
@@ -38,5 +36,4 @@ public class StorageCommand extends ACommand {
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
 }

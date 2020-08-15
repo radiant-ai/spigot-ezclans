@@ -117,19 +117,13 @@ public class Clans {
 		p.sendMessage(String.format(Lang.getLang("clan_name"), Lang.colorString(clan.getName())));
 		p.sendMessage(String.format(Lang.getLang("clan_tag"), Lang.colorString(clan.getTag())));
 		p.sendMessage(String.format(Lang.getLang("clan_leader"), clan.getLeader().getName()));
-		p.sendMessage(String.format(Lang.getLang("clan_balance"), "0.00"));
+		p.sendMessage(String.format(Lang.getLang("clan_balance"), clan.getBank()+" $"));
 		p.sendMessage(String.format(Lang.getLang("clan_size"), Integer.toString(clan.clanSize())));
 		p.sendMessage(Lang.getLang("clan_members")+" "+Lang.colorString(clan.getMemberList()));
 	}
 	
 	public static void msgInfoLeader(Clan clan, Player p) {
-		p.sendMessage(Lang.getLang("clan_info"));
-		p.sendMessage(String.format(Lang.getLang("clan_name"), Lang.colorString(clan.getName())));
-		p.sendMessage(String.format(Lang.getLang("clan_tag"), Lang.colorString(clan.getTag())));
-		p.sendMessage(String.format(Lang.getLang("clan_leader"), clan.getLeader().getName()));
-		p.sendMessage(String.format(Lang.getLang("clan_balance"), "0.00"));
-		p.sendMessage(String.format(Lang.getLang("clan_size"), Integer.toString(clan.clanSize())));
-		p.sendMessage(Lang.getLang("clan_members")+" "+Lang.colorString(clan.getMemberList()));
+		msgInfoMember(clan, p);
 	}
 	
 	public static int clanNumber() {
