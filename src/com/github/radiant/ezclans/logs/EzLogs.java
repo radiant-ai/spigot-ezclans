@@ -16,14 +16,13 @@ import com.github.radiant.ezclans.core.ClanMember;
 
 public class EzLogs {
 	private static EzClans plugin = null;
-	private static ConcurrentLinkedQueue<String> logCache = null;
+	private static ConcurrentLinkedQueue<String> logCache = new ConcurrentLinkedQueue<String>();
 	private static File logFile = null;
-	private static int flushInterval = 200;
+	private static int flushInterval = 1000;
 	
 	public static void initialize(EzClans p) {
 		try {
 			plugin = p;
-			logCache = new ConcurrentLinkedQueue<String>();
 			File folder = plugin.getDataFolder();
 			logFile = new File(folder, "logs"+File.separator+getLogName());
 			new File(logFile.getParent()).mkdirs();

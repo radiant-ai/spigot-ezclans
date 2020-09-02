@@ -37,6 +37,9 @@ public class InviteCommand extends ACommand {
 		if (!member.isLeader() && !member.isModerator()) {
 			throw new CommandException(Lang.getLang("not_leader_or_moderator"));
 		}
+		if (member.getClan().clanSize()+1>Clans.getMaxMembers(member.getClan().getLevel())) {
+			throw new CommandException(Lang.getLang("invite_maxsize")+Clans.getMaxMembers(member.getClan().getLevel()));
+		}
 		String toInvite = args[1];
 		Player invitedPlayer = Bukkit.getServer().getPlayer(toInvite);
 		if (invitedPlayer == null || !invitedPlayer.isOnline()) {

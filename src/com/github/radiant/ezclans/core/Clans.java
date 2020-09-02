@@ -23,14 +23,18 @@ public class Clans {
 	public static Map<UUID, Clan> clans = new HashMap<UUID, Clan>();
 	public static Map<UUID,ClanMember> members = new TreeMap<UUID,ClanMember>();
 	
-	public static double clanCost = 5000;
-	public static int homeCd = 4;
+	public static List<Integer> clanCost;
+	public static List<Integer> homeCd;
+	public static List<Integer> maxBank;
+	public static List<Integer> maxMembers;
 	public static String clanChatFormat = "&7[&2ClanChat&7] &r&c%s&r: %s";
 	public static int clansPerPage = 8;
 	
 	public static void loadConfig(FileConfiguration config) {
-		clanCost = config.getDouble("clan_creation_cost");
-		homeCd = config.getInt("clan_home_cd");
+		clanCost = (List<Integer>) config.getList("clan_creation_cost");
+		homeCd = (List<Integer>) config.getList("clan_home_cd");
+		maxBank = (List<Integer>) config.getList("clan_bank");
+		maxMembers = (List<Integer>) config.getList("clan_capacity");
 		clanChatFormat = config.getString("clan_msg");
 	}
 	
@@ -108,6 +112,7 @@ public class Clans {
 		p.sendMessage(Lang.getLang("clan_info"));
 		p.sendMessage(String.format(Lang.getLang("clan_name"), Lang.colorString(clan.getName())));
 		p.sendMessage(String.format(Lang.getLang("clan_tag"), Lang.colorString(clan.getTag())));
+		p.sendMessage(String.format(Lang.getLang("clan_level"), clan.getLevel()));
 		p.sendMessage(String.format(Lang.getLang("clan_leader"), clan.getLeader().getName()));
 		p.sendMessage(String.format(Lang.getLang("clan_size"), Integer.toString(clan.clanSize())));
 	}
@@ -116,9 +121,10 @@ public class Clans {
 		p.sendMessage(Lang.getLang("clan_info"));
 		p.sendMessage(String.format(Lang.getLang("clan_name"), Lang.colorString(clan.getName())));
 		p.sendMessage(String.format(Lang.getLang("clan_tag"), Lang.colorString(clan.getTag())));
+		p.sendMessage(String.format(Lang.getLang("clan_level"), clan.getLevel()));
 		p.sendMessage(String.format(Lang.getLang("clan_leader"), clan.getLeader().getName()));
-		p.sendMessage(String.format(Lang.getLang("clan_balance"), clan.getBank()+" $"));
-		p.sendMessage(String.format(Lang.getLang("clan_size"), Integer.toString(clan.clanSize())));
+		p.sendMessage(String.format(Lang.getLang("clan_balance"), clan.getBank()+"/"+getMaxBank(clan.getLevel())+" $"));
+		p.sendMessage(String.format(Lang.getLang("clan_size"), Integer.toString(clan.clanSize())+"/"+getMaxMembers(clan.getLevel())));
 		p.sendMessage(Lang.getLang("clan_members")+" "+Lang.colorString(clan.getMemberList()));
 	}
 	
@@ -175,6 +181,42 @@ public class Clans {
 		List<ClanMember> list = clan.getMembers();
 		for (ClanMember m : list) {
 			members.remove(m.getUuid());
+		}
+	}
+	
+	public static int getHomeCd(int lvl) {
+		if (lvl<homeCd.size()) {
+			return homeCd.get(lvl-1);
+		}
+		else {
+			return homeCd.get(homeCd.size()-1);
+		}
+	}
+	
+	public static int getMaxBank(int lvl) {
+		if (lvl<maxBank.size()) {
+			return maxBank.get(lvl-1);
+		}
+		else {
+			return maxBank.get(maxBank.size()-1);
+		}
+	}
+	
+	public static int getMaxMembers(int lvl) {
+		if (lvl<maxMembers.size()) {
+			return maxMembers.get(lvl-1);
+		}
+		else {
+			return maxMembers.get(maxMembers.size()-1);
+		}
+	}
+	
+	public static int getClanCost(int lvl) {
+		if (lvl<clanCost.size()) {
+			return clanCost.get(lvl-1);
+		}
+		else {
+			return clanCost.get(clanCost.size()-1);
 		}
 	}
 }

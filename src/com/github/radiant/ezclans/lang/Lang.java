@@ -17,7 +17,7 @@ public class Lang {
 	public static void initialize(EzClans plugin) {
 		options = new HashMap<String, String>();
 		langFile = new CustomConfig(plugin, "lang.yml");
-		FileConfiguration fc = langFile.getCustomConfig();
+		FileConfiguration fc = langFile.getCustomConfig(true);
 		Set<String> keys = fc.getKeys(false);
 		for (String key : keys) {
 			options.put(key, fc.getString(key));

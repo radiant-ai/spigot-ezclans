@@ -26,7 +26,6 @@ import com.github.radiant.ezclans.lang.Lang;
 			throw new CommandException(Lang.getLang("must_be_player"));
 		}
 		Player p = (Player) sender;
-		double cost = Clans.clanCost;
 		if (args.length < 2) {
 			throw new CommandException(Lang.getLang("not_enough_args"));
 		}
@@ -51,6 +50,7 @@ import com.github.radiant.ezclans.lang.Lang;
 		}
 		
 		currentMember.getClan().setName(clanName);
+		p.sendMessage(String.format(Lang.getLang("clan_rename"), Lang.colorString(clanName)));
 		
 		return false;
 	}

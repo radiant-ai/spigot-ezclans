@@ -1,7 +1,17 @@
-clan_creation_cost: 2500
-clan_lvl2_cost: 5000
-clan_lvl3_cost: 10000
-clan_home_cd: 4
-clan_home2_cd: 3
-clan_home3_cd: 2
+clan_creation_cost:
+   - 5000
+   - 10000
+   - 15000
+clan_home_cd:
+   - 3
+   - 2
+   - 1
+clan_bank:
+   - 20000
+   - 50000
+   - 100000
+clan_capacity:
+   - 10
+   - 25
+   - 50
 clan_msg: "&7[&2ClanChat&7] &r&a%s&r: &a%s"

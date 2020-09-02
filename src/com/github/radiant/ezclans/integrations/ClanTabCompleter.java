@@ -41,6 +41,20 @@ public class ClanTabCompleter implements TabCompleter {
 							return Clans.getClanNames(args[1]);
 						}
 					}
+					else if (args[0].equals("balance")) {
+						List<String> ll = new LinkedList<String>();
+						ll.add("add");
+						ll.add("take");
+						return ll;
+					}
+					else if (cmd.getName().equals("adminclan") && args[0].equals("storage")) {
+						if (args[1].isEmpty()) {
+							return Clans.getClanNames("");
+						}
+						else {
+							return Clans.getClanNames(args[1]);
+						}
+					}
 				}
 			}
 		}

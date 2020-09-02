@@ -10,6 +10,9 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 import com.github.radiant.ezclans.EzClans;
+import com.github.radiant.ezclans.commands.admin.RenameAdminCommand;
+import com.github.radiant.ezclans.commands.admin.SettagAdminCommand;
+import com.github.radiant.ezclans.commands.admin.StorageAdminCommand;
 import com.github.radiant.ezclans.commands.player.AcceptCommand;
 import com.github.radiant.ezclans.commands.player.BalanceCommand;
 import com.github.radiant.ezclans.commands.player.ChatCommand;
@@ -22,6 +25,7 @@ import com.github.radiant.ezclans.commands.player.InviteCommand;
 import com.github.radiant.ezclans.commands.player.KickCommand;
 import com.github.radiant.ezclans.commands.player.LeaveCommand;
 import com.github.radiant.ezclans.commands.player.ListCommand;
+import com.github.radiant.ezclans.commands.player.OnlineCommand;
 import com.github.radiant.ezclans.commands.player.PvpCommand;
 import com.github.radiant.ezclans.commands.player.RemovemoderatorCommand;
 import com.github.radiant.ezclans.commands.player.RenameCommand;
@@ -30,6 +34,7 @@ import com.github.radiant.ezclans.commands.player.SetleaderCommand;
 import com.github.radiant.ezclans.commands.player.SetmoderatorCommand;
 import com.github.radiant.ezclans.commands.player.SettagCommand;
 import com.github.radiant.ezclans.commands.player.StorageCommand;
+import com.github.radiant.ezclans.commands.player.UpgradeCommand;
 
 public class CommandManager {
 	
@@ -59,8 +64,15 @@ public class CommandManager {
 		pcommands.put("demote", RemovemoderatorCommand.class);
 		pcommands.put("setleader", SetleaderCommand.class);
 		pcommands.put("storage", StorageCommand.class);
+		pcommands.put("s", StorageCommand.class);
 		pcommands.put("balance", BalanceCommand.class);
+		pcommands.put("upgrade", UpgradeCommand.class);
+		pcommands.put("online", OnlineCommand.class);
 		commands.put("clan", pcommands);
+		acommands.put("storage", StorageAdminCommand.class);
+		acommands.put("settag", SettagAdminCommand.class);
+		acommands.put("rename", RenameAdminCommand.class);
+		commands.put("adminclan", acommands);
 	}
 	
 	private static ACommand factory(String label, String cmdName, CommandSender sender, String[] args) {

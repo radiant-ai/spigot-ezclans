@@ -35,8 +35,11 @@ public class AcceptCommand extends ACommand {
 		}
 		Pendings.removeInvitePending(p.getUniqueId());
 		Clan toAccept = Clans.getClan(toAcceptId);
-		if (toAccept == null) {
+		if (toAccept == null || toAccept.isDisbanded()) {
 			throw new CommandException(Lang.getLang("accept_disbanded"));
+		}
+		if (toAccept.clanSize()+1>Clans.getMaxMembers(toAccept.getLevel())) {
+			throw new CommandException(Lang.getLang("invite_maxsize")+Clans.getMaxMembers(toAccept.getLevel()));
 		}
 		ClanMember member = Clans.getMember(p.getUniqueId());
 		if (member != null) {

@@ -24,14 +24,13 @@ public class DBYml implements IDBConnector {
 	
 	public DBYml(EzClans plugin) {
 		clans = new CustomConfig(plugin, "clans.yml");
-		clans.reloadCustomConfig();
-		clans.scheduleBackup(1000, 1000);
+		clans.reloadCustomConfig(false);
+		clans.scheduleBackup(2000, 36000);
 	}
 
 	@Override
 	public void loadClans() {
-		clans.reloadCustomConfig();
-		List<HashMap<String, Object>> list = (List<HashMap<String, Object>>) clans.getCustomConfig().get("clans");
+		List<HashMap<String, Object>> list = (List<HashMap<String, Object>>) clans.getCustomConfig(false).get("clans");
 		Map<UUID, Clan> result = new HashMap<UUID, Clan>();
 		if (list != null) {
 			for (HashMap<String, Object> clanMap : list) {
@@ -64,7 +63,7 @@ public class DBYml implements IDBConnector {
 				Entry<UUID, Clan> mapElement = (Entry<UUID, Clan>)mapIterator.next(); 
 				list.add(mapElement.getValue().serialize());
 	        }
-			clans.getCustomConfig().set("clans",list);
+			clans.getCustomConfig(false).set("clans",list);
 			clans.saveCustomConfig();
 			
 			return true;

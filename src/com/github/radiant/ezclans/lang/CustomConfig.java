@@ -26,29 +26,31 @@ public class CustomConfig {
 		this.name = name;
 	}
 	
-	public void reloadCustomConfig() {
+	public void reloadCustomConfig(boolean copyDefaults) {
 	    if (customConfigFile == null) {
 	    customConfigFile = new File(plugin.getDataFolder(), name);
 	    }
 	    customConfig = YamlConfiguration.loadConfiguration(customConfigFile);
-
-	    try {
-	    	Reader defConfigStream = new InputStreamReader(plugin.getResource(name), "UTF8");
-		    if (defConfigStream != null) {
-		        YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
-		        customConfig.setDefaults(defConfig);
-		        customConfig.options().copyDefaults(true);
-		        customConfig.save(customConfigFile);
-		    }
-	    }
-	    catch (Exception e) { 
-	    	plugin.getLogger().severe(e.getStackTrace().toString());
+	    
+	    if (copyDefaults) {
+	    	 try {
+	 	    	Reader defConfigStream = new InputStreamReader(plugin.getResource(name), "UTF8");
+	 		    if (defConfigStream != null) {
+	 		        YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
+	 		        customConfig.setDefaults(defConfig);
+	 		        customConfig.options().copyDefaults(true);
+	 		        customConfig.save(customConfigFile);
+	 		    }
+	 	    }
+	 	    catch (Exception e) { 
+	 	    	e.printStackTrace();
+	 	    }
 	    }
 	}
 	
-	public FileConfiguration getCustomConfig() {
+	public FileConfiguration getCustomConfig(boolean copyDefaults) {
 	    if (customConfig == null) {
-	        reloadCustomConfig();
+	        reloadCustomConfig(copyDefaults);
 	    }
 	    return customConfig;
 	}
@@ -58,7 +60,7 @@ public class CustomConfig {
 	        return;
 	    }
 	    try {
-	        getCustomConfig().save(customConfigFile);
+	    	customConfig.save(customConfigFile);
 	    } catch (IOException ex) {
 	        plugin.getLogger().log(Level.SEVERE, "Could not save config to " + customConfigFile, ex);
 	    }
@@ -83,7 +85,7 @@ public class CustomConfig {
 			    }
 		    }
 		    catch (Exception e) { 
-		    	plugin.getLogger().severe(e.getStackTrace().toString());
+		    	e.printStackTrace();
 		    }
 	    }
 	}

@@ -9,5 +9,5 @@ commands:
    clan:
       aliases: [c]
       description: Main command for EzClans.
-   clanadmin:
+   adminclan:
       description: Admin commands for EzClans.

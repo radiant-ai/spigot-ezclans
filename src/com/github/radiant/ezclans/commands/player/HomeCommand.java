@@ -43,8 +43,9 @@ public class HomeCommand extends ACommand  {
 			return false;
 		}
 		HomeTask ht = new HomeTask(p, home);
-		p.sendMessage(String.format(Lang.getLang("home_prepare"), Integer.toString(Clans.homeCd)));
-		int taskId = Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, ht, 20*Clans.homeCd);
+		int cd = Clans.getHomeCd(member.getClan().getLevel());
+		p.sendMessage(String.format(Lang.getLang("home_prepare"), Integer.toString(cd)));
+		int taskId = Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, ht, 20*cd);
 		TeleportPlayerInfo tpinfo = new TeleportPlayerInfo(taskId, p.getLocation());
 		Pendings.setTeleportPending(p.getUniqueId(), tpinfo);
 		return false;

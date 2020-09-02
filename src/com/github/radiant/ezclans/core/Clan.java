@@ -3,7 +3,9 @@ package com.github.radiant.ezclans.core;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -13,11 +15,13 @@ import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.SerializableAs;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import com.github.radiant.ezclans.lang.Lang;
+import com.github.radiant.ezclans.logs.EzLogs;
 import com.github.radiant.ezclans.utils.InventoryUtils;
 
 @SerializableAs("Clan")
@@ -46,7 +50,7 @@ public class Clan implements Cloneable, ConfigurationSerializable {
 		this.disbanded = false;
 		this.bank = 0;
 		this.level = 1;
-		this.storage = Bukkit.createInventory(null, 9, "Clan storage");
+		this.storage = Bukkit.createInventory(null, 9, Lang.getLang("clan_storage"));
 	}
 
 	public Clan(UUID id, String name, String tag, List<ClanMember> members, ClanMember leader, Date creationDate, Location home, int bank, int level, Inventory storage) {
@@ -203,6 +207,19 @@ public class Clan implements Cloneable, ConfigurationSerializable {
 		return result;
 	}
 	
+	public String getOnlineList() {
+		String result = "";
+		for (ClanMember cm : members) {
+			if (Bukkit.getPlayer(cm.getUuid()) != null && Bukkit.getPlayer(cm.getUuid()).isOnline()) {
+				result+=cm.getName()+" ";
+			}
+		}
+		if (result.isEmpty()) {
+			result = Lang.getLang("nobody");
+		}
+		return result;
+	}
+	
 	public void clanMessage(ClanMember cm, String msg) {
 		for (ClanMember member : members) {
 			Player p = Bukkit.getPlayer(member.getUuid());
@@ -224,6 +241,48 @@ public class Clan implements Cloneable, ConfigurationSerializable {
 	public String shortEntry() {
 		return String.format(Lang.getLang("list_clan"), name, tag);
 	}
+	
+	public void upgrade() throws ClanException {
+		int aimingLvl = level + 1;
+		if (aimingLvl <= 3) {
+			int cost = Clans.getClanCost(aimingLvl);
+			if (cost<=bank) {
+				clanMessage(Lang.getLang("clan_upgrade"));
+				bank-=cost;
+				EzLogs.logBalance(new ClanMember(null, "LVL"+aimingLvl, this), this, cost, "UPGRADE");
+				upgradeStorage(aimingLvl);
+				level = aimingLvl;
+			}
+			else {
+				throw new ClanException(Lang.getLang("upgrade_cost")+cost+"$");
+			}
+		}
+		else {
+			throw new ClanException(Lang.getLang("upgrade_max"));
+		}
+	}
+	
+	public void closeStorageForAll() {
+		List<HumanEntity> viewers = storage.getViewers();
+		List<HumanEntity> viewersCopy = new LinkedList<HumanEntity>();
+		viewersCopy.addAll(viewers);
+		for (HumanEntity viewer : viewersCopy) {
+			viewer.closeInventory();
+		}
+	}
+	
+	private void upgradeStorage(int lvl) {
+		Inventory newStorage = null;
+		closeStorageForAll();
+		if (lvl==2) {
+			newStorage = Bukkit.createInventory(null, 27, Lang.getLang("clan_storage"));
+		}
+		else if (lvl==3) {
+			newStorage = Bukkit.createInventory(null, 54, Lang.getLang("clan_storage"));
+		}
+		newStorage.setContents(storage.getContents());
+		storage = newStorage;
+	}
 
 	@Override
 	public Map<String, Object> serialize() {
@@ -240,6 +299,7 @@ public class Clan implements Cloneable, ConfigurationSerializable {
 		result.put("creationdate", ""+creationDate.getTime());
 		result.put("home", home==null ? "null" : home);
 		result.put("bank", ""+bank);
+		result.put("level", ""+level);
 		ItemStack[] stacks = storage.getContents();
 		for (int i = 0; i < stacks.length; i++) {
 			if (!InventoryUtils.testSavable(stacks[i])) {
@@ -264,6 +324,13 @@ public class Clan implements Cloneable, ConfigurationSerializable {
 			bank = Integer.parseInt((String) bankRaw);
 		}
 		
+		int level = 1;
+		Object levelRaw = map.get("level");
+		if (levelRaw!=null) {
+			levelRaw = Integer.parseInt((String) levelRaw);
+			level = (int) levelRaw;
+		}
+		
 		
 		@SuppressWarnings("unchecked")
 		List<Map<String, Object>> mapMembers = (List<Map<String, Object>>) map.get("members");
@@ -273,12 +340,22 @@ public class Clan implements Cloneable, ConfigurationSerializable {
 		if (home_o instanceof Location) {
 			clanHome = (Location) home_o;
 		}
-		Inventory inv = Bukkit.createInventory(null, 9, "Clan storage");
-		ArrayList<ItemStack> stacks = (ArrayList<ItemStack>) map.get("storage");
-		for (int i = 0; i<stacks.size(); i++) {
-			inv.setItem(i, stacks.get(i));
+		String storageName = Lang.getLang("clan_storage");
+		Inventory inv = Bukkit.createInventory(null, 9, storageName);
+		if (level==2) {
+			inv = Bukkit.createInventory(null, 27, storageName);
 		}
-		Clan result = new Clan(uuid, n, t, null, null, date, clanHome, bank, 1, inv);
+		else if (level==3) {
+			inv = Bukkit.createInventory(null, 54, storageName);
+		}
+		ArrayList<ItemStack> stacks = (ArrayList<ItemStack>) map.get("storage");
+		if (stacks != null) {
+			for (int i = 0; i<stacks.size() && i<inv.getSize(); i++) {
+				inv.setItem(i, stacks.get(i));
+			}
+		}
+		
+		Clan result = new Clan(uuid, n, t, null, null, date, clanHome, bank, level, inv);
 		ClanMember leaderMember = null;
 		for (Map<String, Object> m : mapMembers) {
 			ClanMember mem = ClanMember.deserialize(m, result);

@@ -32,11 +32,11 @@ public class EzClans extends JavaPlugin {
 		if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
 			new EzPlaceholder(this).register();
         }
+		Lang.initialize(this);
 		enableSerialization();
 		registerCommands();
 		loadConfigs();
 		loadDB();
-		Lang.initialize(this);
 		CommandManager.initialize(this);
 		EzLogs.initialize(this);
 		registerEvents();
@@ -49,9 +49,9 @@ public class EzClans extends JavaPlugin {
 	
 	private void registerCommands() {
 		this.getCommand("clan").setExecutor(new ClanCommandExecutor());
-		this.getCommand("clanadmin").setExecutor(new ClanCommandExecutor());
+		this.getCommand("adminclan").setExecutor(new ClanCommandExecutor());
 		this.getCommand("clan").setTabCompleter(new ClanTabCompleter());
-		this.getCommand("clanadmin").setTabCompleter(new ClanTabCompleter());
+		this.getCommand("adminclan").setTabCompleter(new ClanTabCompleter());
 	}
 	
 	private void registerEvents() {

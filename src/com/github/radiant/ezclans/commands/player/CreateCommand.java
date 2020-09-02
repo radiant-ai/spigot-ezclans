@@ -28,7 +28,7 @@ public class CreateCommand extends ACommand{
 			throw new CommandException(Lang.getLang("must_be_player"));
 		}
 		Player p = (Player) sender;
-		double cost = Clans.clanCost;
+		double cost = Clans.getClanCost(1);
 		if (args.length < 2) {
 			throw new CommandException(Lang.getLang("not_enough_args"));
 		}

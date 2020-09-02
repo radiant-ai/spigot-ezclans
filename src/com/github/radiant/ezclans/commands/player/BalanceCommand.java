@@ -34,7 +34,7 @@ public class BalanceCommand extends ACommand {
 		}
 		Clan clan = member.getClan();
 		if (args.length < 2) {
-			p.sendMessage(String.format(Lang.getLang("balance"), clan.getBank()+" $"));
+			p.sendMessage(String.format(Lang.getLang("balance"), clan.getBank()));
 		}
 		else if (args.length > 2) {
 			if (!member.isLeader() && !member.isModerator()) {
@@ -54,26 +54,32 @@ public class BalanceCommand extends ACommand {
 			}
 			double balance = EzEconomy.getBalance(p);
 			int bank = clan.getBank();
+			int maxBank = Clans.getMaxBank(clan.getLevel());
 			if (action.equals("add")) {
 				if (balance >= parsedAmt) {
-					clan.deposit(parsedAmt);
-					EzEconomy.withdraw(p, parsedAmt);
-					p.sendMessage(String.format(Lang.getLang("balance_add"), parsedAmt+" $"));
-					EzLogs.logBalance(member, clan, parsedAmt, "deposit");
+					if (parsedAmt+bank > maxBank) {
+						p.sendMessage(String.format(Lang.getLang("maxbank"), maxBank+""));
+					}
+					else {
+						clan.deposit(parsedAmt);
+						EzEconomy.withdraw(p, parsedAmt);
+						p.sendMessage(String.format(Lang.getLang("balance_add"), parsedAmt+""));
+						EzLogs.logBalance(member, clan, parsedAmt, "deposit");
+					}
 				}
 				else {
-					throw new CommandException(String.format(Lang.getLang("not_enough_money"), parsedAmt+" $"));
+					throw new CommandException(String.format(Lang.getLang("not_enough_money"), parsedAmt+""));
 				}
 			}
 			else if (action.equals("take")) {
 				if (bank >= parsedAmt) {
 					clan.withdraw(parsedAmt);
 					EzEconomy.pay(p, parsedAmt);
-					p.sendMessage(String.format(Lang.getLang("balance_take"), parsedAmt+" $"));
+					p.sendMessage(String.format(Lang.getLang("balance_take"), parsedAmt+""));
 					EzLogs.logBalance(member, clan, parsedAmt, "withdraw");
 				}
 				else {
-					throw new CommandException(String.format(Lang.getLang("bank_not_enough"), parsedAmt+" $"));
+					throw new CommandException(String.format(Lang.getLang("bank_not_enough"), parsedAmt+""));
 				}
 			}
 			else {
