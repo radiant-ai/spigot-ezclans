@@ -249,7 +249,7 @@ public class Clan implements Cloneable, ConfigurationSerializable {
 			if (cost<=bank) {
 				clanMessage(Lang.getLang("clan_upgrade"));
 				bank-=cost;
-				EzLogs.logBalance(new ClanMember(null, "LVL"+aimingLvl, this), this, cost, "UPGRADE");
+				EzLogs.logBalance(new ClanMember(null, "LVL"+aimingLvl, this), cost, "UPGRADE");
 				upgradeStorage(aimingLvl);
 				level = aimingLvl;
 			}

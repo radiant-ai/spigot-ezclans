@@ -64,7 +64,7 @@ public class BalanceCommand extends ACommand {
 						clan.deposit(parsedAmt);
 						EzEconomy.withdraw(p, parsedAmt);
 						p.sendMessage(String.format(Lang.getLang("balance_add"), parsedAmt+""));
-						EzLogs.logBalance(member, clan, parsedAmt, "deposit");
+						EzLogs.logBalance(member, parsedAmt, "deposit");
 					}
 				}
 				else {
@@ -76,7 +76,7 @@ public class BalanceCommand extends ACommand {
 					clan.withdraw(parsedAmt);
 					EzEconomy.pay(p, parsedAmt);
 					p.sendMessage(String.format(Lang.getLang("balance_take"), parsedAmt+""));
-					EzLogs.logBalance(member, clan, parsedAmt, "withdraw");
+					EzLogs.logBalance(member, parsedAmt, "withdraw");
 				}
 				else {
 					throw new CommandException(String.format(Lang.getLang("bank_not_enough"), parsedAmt+""));

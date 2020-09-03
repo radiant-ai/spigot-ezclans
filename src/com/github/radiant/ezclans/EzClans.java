@@ -19,6 +19,7 @@ import com.github.radiant.ezclans.integrations.EzEconomy;
 import com.github.radiant.ezclans.integrations.EzPlaceholder;
 import com.github.radiant.ezclans.lang.Lang;
 import com.github.radiant.ezclans.logs.EzLogs;
+import com.github.radiant.ezclans.logs.InventoryListener;
 
 public class EzClans extends JavaPlugin {
 	public static IDBConnector db;
@@ -58,6 +59,7 @@ public class EzClans extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new PlayerMove(), this);
 		getServer().getPluginManager().registerEvents(new PvpEvent(), this);
 		getServer().getPluginManager().registerEvents(new ChatEvent(this), this);
+		getServer().getPluginManager().registerEvents(new InventoryListener(), this);
 	}
 	
 	private void loadConfigs() {

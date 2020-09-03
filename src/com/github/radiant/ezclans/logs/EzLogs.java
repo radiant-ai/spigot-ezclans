@@ -8,11 +8,14 @@ import java.time.format.DateTimeFormatter;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.github.radiant.ezclans.EzClans;
 import com.github.radiant.ezclans.core.Clan;
 import com.github.radiant.ezclans.core.ClanMember;
+import com.github.radiant.ezclans.core.Clans;
 
 public class EzLogs {
 	private static EzClans plugin = null;
@@ -65,31 +68,34 @@ public class EzLogs {
 		}
 	}
 	
-	public static void logBalance(ClanMember cm, Clan c, int amt, String action) {
+	public static void logBalance(ClanMember cm, int amt, String action) {
 		String entry = "";
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");  
 		LocalDateTime now = LocalDateTime.now();
 		entry = entry+="["+dtf.format(now)+"] ";
 		entry+="Action: "+action;
 		entry+=" Amt: "+amt;
-		entry+=" Clan: "+c.getTag();
-		entry+=" Id: "+c.getId();
+		entry+=" Clan: "+cm.getClan().getTag();
+		entry+=" Id: "+cm.getClan().getId();
 		entry+=" Player: "+cm.getName();
 		logCache.add(entry);
 	}
 	
-	public static void logStorage(ClanMember cm, Clan c, ItemStack is, String action) {
+	public static void logStorage(Player p, Material m, int amt, String action) {
 		String entry = "";
-		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");  
-		LocalDateTime now = LocalDateTime.now();
-		entry = entry+="["+dtf.format(now)+"] ";
-		entry+="Action: "+action;
-		entry+=" Item: "+is.getType().toString();
-		entry+=" Amt: "+is.getAmount();
-		entry+=" Clan: "+c.getTag();
-		entry+=" Id: "+c.getId();
-		entry+=" Player: "+cm.getName();
-		logCache.add(entry);
+		ClanMember cm = Clans.getMember(p.getUniqueId());
+		if (cm != null) {
+			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");  
+			LocalDateTime now = LocalDateTime.now();
+			entry = entry+="["+dtf.format(now)+"] ";
+			entry+="Action: "+action;
+			entry+=" Item: "+m.toString();
+			entry+=" Amt: "+amt;
+			entry+=" Clan: "+cm.getClan().getTag();
+			entry+=" Id: "+cm.getClan().getId();
+			entry+=" Player: "+p.getName();
+			logCache.add(entry);
+		}
 	}
 	
 	private static String getLogName() {
