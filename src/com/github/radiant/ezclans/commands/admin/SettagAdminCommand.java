@@ -32,11 +32,7 @@ public class SettagAdminCommand extends ACommand {
 			throw new CommandException(Lang.getLang("not_enough_args"));
 		}
 		String toRetag = args[1];
-		Player retagPlayer = Bukkit.getServer().getPlayer(toRetag);
-		if (retagPlayer == null || !retagPlayer.isOnline()) {
-			throw new CommandException(Lang.getLang("player_not_found"));
-		}
-		ClanMember retagMember = Clans.getMember(retagPlayer.getUniqueId());
+		ClanMember retagMember = Clans.getMemberByName(toRetag);
 		if (retagMember == null) {
 			throw new CommandException(Lang.getLang("not_in_clan_other"));
 		}

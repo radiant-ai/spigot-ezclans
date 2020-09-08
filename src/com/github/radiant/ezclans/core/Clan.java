@@ -207,7 +207,7 @@ public class Clan implements Cloneable, ConfigurationSerializable {
 		return result;
 	}
 	
-	public String getOnlineList() {
+	public String getOnlineString() {
 		String result = "";
 		for (ClanMember cm : members) {
 			if (Bukkit.getPlayer(cm.getUuid()) != null && Bukkit.getPlayer(cm.getUuid()).isOnline()) {
@@ -216,6 +216,16 @@ public class Clan implements Cloneable, ConfigurationSerializable {
 		}
 		if (result.isEmpty()) {
 			result = Lang.getLang("nobody");
+		}
+		return result;
+	}
+	
+	public List<String> getOnlineList() {
+		List<String> result = new LinkedList<String>();
+		for (ClanMember cm : members) {
+			if (Bukkit.getPlayer(cm.getUuid()) != null && Bukkit.getPlayer(cm.getUuid()).isOnline()) {
+				result.add(cm.getName());
+			}
 		}
 		return result;
 	}

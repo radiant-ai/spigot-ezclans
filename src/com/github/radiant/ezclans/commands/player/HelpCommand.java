@@ -9,7 +9,7 @@ import com.github.radiant.ezclans.lang.Lang;
 
 public class HelpCommand extends ACommand {
 	
-	private static int pages = 3;
+	private static int pages = 4;
 	
 	public HelpCommand(CommandSender sender, String[] args, EzClans plugin) {
 		super(sender, args, plugin);
@@ -42,8 +42,22 @@ public class HelpCommand extends ACommand {
 			page = 1;
 		sender.sendMessage(Lang.getLang("help")+" "+String.format(Lang.getLang("page"), Integer.toString(page), Integer.toString(pages))+":");
 		switch (page) {
+		case 4:
+			sender.sendMessage(Lang.getLang("help_1"));
+			sender.sendMessage(Lang.getLang("help_2"));
+			sender.sendMessage(Lang.getLang("help_3"));
+			sender.sendMessage(Lang.getLang("help_4"));
+			sender.sendMessage(Lang.getLang("help_5"));
+			sender.sendMessage(Lang.getLang("help_6"));
+			sender.sendMessage(Lang.getLang("help_7"));
+			sender.sendMessage(Lang.getLang("help_8"));
+			break;
 		case 3:
 			sender.sendMessage(Lang.getLang("help_setleader"));
+			sender.sendMessage(Lang.getLang("help_online"));
+			sender.sendMessage(Lang.getLang("help_balance"));
+			sender.sendMessage(Lang.getLang("help_upgrade"));
+			sender.sendMessage(Lang.getLang("help_storage"));
 			break;
 		case 2:
 			sender.sendMessage(Lang.getLang("help_rename"));

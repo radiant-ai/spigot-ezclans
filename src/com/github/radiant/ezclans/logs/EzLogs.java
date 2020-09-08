@@ -21,7 +21,7 @@ public class EzLogs {
 	private static EzClans plugin = null;
 	private static ConcurrentLinkedQueue<String> logCache = new ConcurrentLinkedQueue<String>();
 	private static File logFile = null;
-	private static int flushInterval = 1000;
+	private static int flushInterval = 600;
 	
 	public static void initialize(EzClans p) {
 		try {

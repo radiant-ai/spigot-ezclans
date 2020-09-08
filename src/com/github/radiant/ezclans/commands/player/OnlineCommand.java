@@ -29,7 +29,7 @@ public class OnlineCommand extends ACommand {
 		if (member == null) {
 			throw new CommandException(Lang.getLang("not_in_clan"));
 		}
-		p.sendMessage(Lang.getLang("online_list")+member.getClan().getOnlineList());
+		p.sendMessage(Lang.getLang("online_list")+member.getClan().getOnlineString());
 		return false;
 	}
 

@@ -1,50 +1,56 @@
 package com.github.radiant.ezclans.commands.admin;
 
-import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.github.radiant.ezclans.EzClans;
 import com.github.radiant.ezclans.commands.ACommand;
 import com.github.radiant.ezclans.commands.CommandException;
-import com.github.radiant.ezclans.commands.CommandManager;
-import com.github.radiant.ezclans.core.ClanMember;
+import com.github.radiant.ezclans.core.Clan;
 import com.github.radiant.ezclans.core.Clans;
 import com.github.radiant.ezclans.lang.Lang;
 
-public class RenameAdminCommand extends ACommand {
+public class HomeAdminCommand extends ACommand {
 	
+	protected static final boolean consoleExecutable = false;
 	protected static final String requirePermission = "ezclans.admin";
 
-	public RenameAdminCommand(CommandSender sender, String[] args, EzClans plugin) {
+	public HomeAdminCommand(CommandSender sender, String[] args, EzClans plugin) {
 		super(sender, args, plugin);
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public boolean execute() throws Exception {
-		if (sender instanceof Player && !((Player) sender).hasPermission(requirePermission)) {
+		if (!consoleExecutable && !(sender instanceof Player)) {
+			throw new CommandException(Lang.getLang("must_be_player"));
+		}
+		Player p = (Player) sender;
+		if (!p.hasPermission(requirePermission)) {
 			throw new CommandException(Lang.getLang("not_enough_perms"));
 		}
-		if (args.length < 3) {
+		if (args.length < 2) {
 			throw new CommandException(Lang.getLang("not_enough_args"));
 		}
-		String toRename = args[1];
-		ClanMember retagMember = Clans.getMemberByName(toRename);
-		if (retagMember == null) {
-			throw new CommandException(Lang.getLang("not_in_clan_other"));
-		}
 		String clanName = "";
-		for (int i = 2; i < args.length; i++) {
+		for (int i = 1; i < args.length; i++) {
 			clanName += args[i]+" ";
 		}
 		clanName = clanName.trim();
-		if (!CommandManager.legalTag(clanName)) {
-			throw new CommandException(Lang.getLang("illegal_tag"));
+		Clan clan = Clans.getClanByName(clanName);
+		if (clan != null) {
+			Location home = clan.getHome();
+			if (home != null) {
+				p.teleport(home);
+			}
+			else {
+				throw new CommandException(Lang.getLang("no_clanhome"));
+			}
 		}
-		retagMember.getClan().setName(clanName);
-		sender.sendMessage(String.format(Lang.getLang("clan_rename"), Lang.colorString(clanName)));
-		
+		else {
+			throw new CommandException(Lang.getLang("no_such_clan"));
+		}
 		return false;
 	}
 
@@ -53,5 +59,5 @@ public class RenameAdminCommand extends ACommand {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
+	
 }

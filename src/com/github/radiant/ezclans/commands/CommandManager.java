@@ -10,6 +10,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 import com.github.radiant.ezclans.EzClans;
+import com.github.radiant.ezclans.commands.admin.HomeAdminCommand;
 import com.github.radiant.ezclans.commands.admin.RenameAdminCommand;
 import com.github.radiant.ezclans.commands.admin.SettagAdminCommand;
 import com.github.radiant.ezclans.commands.admin.StorageAdminCommand;
@@ -72,6 +73,7 @@ public class CommandManager {
 		acommands.put("storage", StorageAdminCommand.class);
 		acommands.put("settag", SettagAdminCommand.class);
 		acommands.put("rename", RenameAdminCommand.class);
+		acommands.put("home", HomeAdminCommand.class);
 		commands.put("adminclan", acommands);
 	}
 	
@@ -115,8 +117,9 @@ public class CommandManager {
 		}
 	}
 	public static boolean legalName(String name) {
-		if (stripColor(name).length() <= 32) {
-			if (name.matches("[\\wà-ÿÀ-ß\"\'\\-¸¨ &]+")) {
+		String strippedName = stripColor(name);
+		if (strippedName.length() <= 28) {
+			if (strippedName.matches("[\\wà-ÿÀ-ß\"\'\\-¸¨ &]+")) {
 				return true;
 			}
 		}
@@ -124,8 +127,9 @@ public class CommandManager {
 	}
 	
 	public static boolean legalTag(String name) {
-		if (stripColor(name).length() <= 20) {
-			if (name.matches("[\\wà-ÿÀ-ß\"\'\\-¸¨ &\u0021-\uFFFC]+")) {
+		String strippedName = stripColor(name);
+		if (strippedName.length() <= 12) {
+			if (strippedName.matches("[\\wà-ÿÀ-ß\"\'\\-¸¨ &\u0021-\uFFFC]+")) {
 				return true;
 			}
 		}

@@ -34,8 +34,14 @@ public class SethomeCommand extends ACommand {
 			throw new CommandException(Lang.getLang("not_leader_or_moderator"));
 		}
 		Clan clan = member.getClan();
-		clan.setHome(p.getLocation());
-		p.sendMessage(Lang.getLang("sethome"));
+		if (clan.getBank() >= Clans.getSethomeCost()) {
+			clan.setHome(p.getLocation());
+			p.sendMessage(Lang.getLang("sethome"));
+			clan.withdraw(Clans.getSethomeCost());
+		}
+		else {
+			throw new CommandException(String.format(Lang.getLang("bank_not_enough"), Clans.getSethomeCost()+""));
+		}
 		return false;
 	}
 

@@ -47,7 +47,7 @@ public class ClanTabCompleter implements TabCompleter {
 						ll.add("take");
 						return ll;
 					}
-					else if (cmd.getName().equals("adminclan") && args[0].equals("storage")) {
+					else if (cmd.getName().equals("adminclan") && (args[0].equals("storage") || args[0].equals("home"))) {
 						if (args[1].isEmpty()) {
 							return Clans.getClanNames("");
 						}
