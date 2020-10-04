@@ -2,4 +2,4 @@
 
 Add clans to your minercaft server!
 
-Developed for: [VanillaOnly](https://vanillaonly.ru)
+Developed for: [Artale.org](https://artale.org/)
