@@ -1,5 +1,7 @@
 package com.github.radiant.ezclans.commands.player;
 
+import com.github.radiant.ezclans.core.Clan;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -29,7 +31,9 @@ public class OnlineCommand extends ACommand {
 		if (member == null) {
 			throw new CommandException(Lang.getLang("not_in_clan"));
 		}
-		p.sendMessage(Lang.getLang("online_list")+member.getClan().getOnlineString());
+		Clan clan = member.getClan();
+		p.sendMessage(Lang.getLang("online_list")
+				+ " (" + clan.getOnlineList().size() + "): " + ChatColor.WHITE + clan.getOnlineString());
 		return false;
 	}
 
