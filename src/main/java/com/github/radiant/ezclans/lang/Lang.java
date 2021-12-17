@@ -1,6 +1,7 @@
 package com.github.radiant.ezclans.lang;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -34,5 +35,9 @@ public class Lang {
 	
 	public static String colorString(String str) {
 		return ChatColor.translateAlternateColorCodes('&', str);
+	}
+
+	public static boolean checkHex(String string) {
+		return string.matches("^#[\\da-fA-F]{6}$");
 	}
 }

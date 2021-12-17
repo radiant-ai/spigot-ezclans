@@ -179,6 +179,21 @@ public class EzPlaceholder extends PlaceholderExpansion {
 				return "";
 			}
 	    }
+
+		// %ezclans_clan_color%
+		else if(identifier.equals("clan_color")) {
+			ClanMember member = Clans.getMember(player.getUniqueId());
+			if (member != null) {
+				String color = member.getClan().getColor();
+				if (!color.isEmpty())
+					return String.format("{%s}◆", member.getClan().getColor());
+				else
+					return "";
+			}
+			else {
+				return "";
+			}
+		}
         
         return null;
     }

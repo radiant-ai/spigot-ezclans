@@ -16,3 +16,4 @@ clan_capacity:
    - 50
 clan_sethome_cost: 1000
 clan_msg: "&7[&2ClanChat&7] &r&a%s&r: &a%s"
+clan_loginmessage_max: 100

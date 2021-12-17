@@ -58,6 +58,8 @@ public class HelpCommand extends ACommand {
 			sender.sendMessage(Lang.getLang("help_balance"));
 			sender.sendMessage(Lang.getLang("help_upgrade"));
 			sender.sendMessage(Lang.getLang("help_storage"));
+			sender.sendMessage(Lang.getLang("help_color"));
+			sender.sendMessage(Lang.getLang("help_loginmessage"));
 			break;
 		case 2:
 			sender.sendMessage(Lang.getLang("help_rename"));

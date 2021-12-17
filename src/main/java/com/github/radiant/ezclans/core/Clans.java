@@ -29,6 +29,7 @@ public class Clans {
 	public static List<Integer> homeCd;
 	public static List<Integer> maxBank;
 	public static List<Integer> maxMembers;
+	public static int maxLoginmessageLength = 80;
 	public static int sethomeCost;
 	public static String clanChatFormat = "&7[&2ClanChat&7] &r&c%s&r: %s";
 	public static int clansPerPage = 8;
@@ -40,6 +41,7 @@ public class Clans {
 		maxMembers = (List<Integer>) config.getList("clan_capacity");
 		sethomeCost = config.getInt("clan_sethome_cost");
 		clanChatFormat = config.getString("clan_msg");
+		maxLoginmessageLength = config.getInt("clan_loginmessage_max");
 	}
 	
 	public static void addClan(Clan c) {
@@ -139,6 +141,7 @@ public class Clans {
 		p.sendMessage(String.format(Lang.getLang("clan_balance"), clan.getBank()+"/"+getMaxBank(clan.getLevel())+" $"));
 		p.sendMessage(String.format(Lang.getLang("clan_size"), Integer.toString(clan.clanSize())+"/"+getMaxMembers(clan.getLevel())));
 		p.sendMessage(Lang.getLang("clan_members")+" "+Lang.colorString(clan.getMemberList()));
+		p.sendMessage(Lang.getLang("clan_loginmessage")+" "+clan.getLoginMessage());
 	}
 	
 	public static void msgInfoLeader(Clan clan, Player p) {

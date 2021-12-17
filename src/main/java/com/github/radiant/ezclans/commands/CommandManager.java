@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.github.radiant.ezclans.commands.player.*;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -14,28 +15,6 @@ import com.github.radiant.ezclans.commands.admin.HomeAdminCommand;
 import com.github.radiant.ezclans.commands.admin.RenameAdminCommand;
 import com.github.radiant.ezclans.commands.admin.SettagAdminCommand;
 import com.github.radiant.ezclans.commands.admin.StorageAdminCommand;
-import com.github.radiant.ezclans.commands.player.AcceptCommand;
-import com.github.radiant.ezclans.commands.player.BalanceCommand;
-import com.github.radiant.ezclans.commands.player.ChatCommand;
-import com.github.radiant.ezclans.commands.player.CreateCommand;
-import com.github.radiant.ezclans.commands.player.DisbandCommand;
-import com.github.radiant.ezclans.commands.player.HelpCommand;
-import com.github.radiant.ezclans.commands.player.HomeCommand;
-import com.github.radiant.ezclans.commands.player.InfoCommand;
-import com.github.radiant.ezclans.commands.player.InviteCommand;
-import com.github.radiant.ezclans.commands.player.KickCommand;
-import com.github.radiant.ezclans.commands.player.LeaveCommand;
-import com.github.radiant.ezclans.commands.player.ListCommand;
-import com.github.radiant.ezclans.commands.player.OnlineCommand;
-import com.github.radiant.ezclans.commands.player.PvpCommand;
-import com.github.radiant.ezclans.commands.player.RemovemoderatorCommand;
-import com.github.radiant.ezclans.commands.player.RenameCommand;
-import com.github.radiant.ezclans.commands.player.SethomeCommand;
-import com.github.radiant.ezclans.commands.player.SetleaderCommand;
-import com.github.radiant.ezclans.commands.player.SetmoderatorCommand;
-import com.github.radiant.ezclans.commands.player.SettagCommand;
-import com.github.radiant.ezclans.commands.player.StorageCommand;
-import com.github.radiant.ezclans.commands.player.UpgradeCommand;
 
 public class CommandManager {
 	
@@ -69,6 +48,8 @@ public class CommandManager {
 		pcommands.put("balance", BalanceCommand.class);
 		pcommands.put("upgrade", UpgradeCommand.class);
 		pcommands.put("online", OnlineCommand.class);
+		pcommands.put("loginmessage", LoginmessageCommand.class);
+		pcommands.put("color", ColorCommand.class);
 		commands.put("clan", pcommands);
 		acommands.put("storage", StorageAdminCommand.class);
 		acommands.put("settag", SettagAdminCommand.class);
@@ -119,7 +100,7 @@ public class CommandManager {
 	public static boolean legalName(String name) {
 		String strippedName = stripColor(name);
 		if (strippedName.length() <= 28) {
-			if (strippedName.matches("[\\wà-ÿÀ-ß\"\'\\-¸¨ &]+")) {
+			if (strippedName.matches("[\\wï¿½-ï¿½ï¿½-ï¿½\"\'\\-ï¿½ï¿½ &]+")) {
 				return true;
 			}
 		}
@@ -129,7 +110,7 @@ public class CommandManager {
 	public static boolean legalTag(String name) {
 		String strippedName = stripColor(name);
 		if (strippedName.length() <= 12) {
-			if (strippedName.matches("[\\wà-ÿÀ-ß\"\'\\-¸¨ &\u0021-\uFFFC]+")) {
+			if (strippedName.matches("[\\wï¿½-ï¿½ï¿½-ï¿½\"\'\\-ï¿½ï¿½ &\u0021-\uFFFC]+")) {
 				return true;
 			}
 		}

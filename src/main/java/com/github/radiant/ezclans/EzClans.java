@@ -1,5 +1,6 @@
 package com.github.radiant.ezclans;
 
+import com.github.radiant.ezclans.events.LoginEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -23,8 +24,10 @@ import com.github.radiant.ezclans.logs.InventoryListener;
 
 public class EzClans extends JavaPlugin {
 	public static IDBConnector db;
+	public static EzClans plugin;
 	
 	public void onEnable() {
+		plugin = this;
 		if (!EzEconomy.setupEconomy() ) {
             Bukkit.getLogger().severe(String.format("[%s] - Disabled due to no Vault dependency found!", getDescription().getName()));
             getServer().getPluginManager().disablePlugin(this);
@@ -60,6 +63,7 @@ public class EzClans extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new PvpEvent(), this);
 		getServer().getPluginManager().registerEvents(new ChatEvent(this), this);
 		getServer().getPluginManager().registerEvents(new InventoryListener(), this);
+		getServer().getPluginManager().registerEvents(new LoginEvent(), this);
 	}
 	
 	private void loadConfigs() {

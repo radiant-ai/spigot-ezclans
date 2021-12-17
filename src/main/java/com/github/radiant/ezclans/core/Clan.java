@@ -37,6 +37,8 @@ public class Clan implements Cloneable, ConfigurationSerializable {
 	private int bank;
 	private int level;
 	private Inventory storage;
+	private String loginMessage;
+	private String color;
 	
 	public Clan(String name) {
 		super();
@@ -51,13 +53,26 @@ public class Clan implements Cloneable, ConfigurationSerializable {
 		this.bank = 0;
 		this.level = 1;
 		this.storage = Bukkit.createInventory(null, 9, Lang.getLang("clan_storage"));
+		this.loginMessage = "";
+		this.color = "";
 	}
 
-	public Clan(UUID id, String name, String tag, List<ClanMember> members, ClanMember leader, Date creationDate, Location home, int bank, int level, Inventory storage) {
+	public Clan(UUID id,
+				String name,
+				String tag,
+				List<ClanMember> members,
+				ClanMember leader,
+				Date creationDate,
+				Location home,
+				int bank,
+				int level,
+				Inventory storage,
+				String loginMessage,
+				String color) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.tag = tag;
+		this.tag = tag == null ? "" : tag;
 		if (members == null) {
 			this.members = new ArrayList<ClanMember>();
 		}
@@ -71,6 +86,8 @@ public class Clan implements Cloneable, ConfigurationSerializable {
 		this.bank = bank;
 		this.level = level;
 		this.storage = storage;
+		this.loginMessage = loginMessage == null ? "" : loginMessage;
+		this.color = color == null ? "" : color;
 	}
 
 	public String getName() {
@@ -101,6 +118,22 @@ public class Clan implements Cloneable, ConfigurationSerializable {
 			this.leader = member;
 			member.setStatus("leader");
 		}
+	}
+
+	public String getLoginMessage() {
+		return loginMessage;
+	}
+
+	public void setLoginMessage(String loginMessage) {
+		this.loginMessage = loginMessage;
+	}
+
+	public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
 	}
 
 	public UUID getId() {
@@ -327,6 +360,8 @@ public class Clan implements Cloneable, ConfigurationSerializable {
 		String t = (String) map.get("tag");
 		Date date = new Date(Long.parseLong((String) map.get("creationdate")));
 		UUID leaderUUID = UUID.fromString((String) map.get("leader"));
+		String loginMessage = (String) map.get("loginMessage");
+		String color = (String) map.get("color");
 		
 		int bank = 0;
 		Object bankRaw = map.get("bank");
@@ -365,7 +400,7 @@ public class Clan implements Cloneable, ConfigurationSerializable {
 			}
 		}
 		
-		Clan result = new Clan(uuid, n, t, null, null, date, clanHome, bank, level, inv);
+		Clan result = new Clan(uuid, n, t, null, null, date, clanHome, bank, level, inv, loginMessage, color);
 		ClanMember leaderMember = null;
 		for (Map<String, Object> m : mapMembers) {
 			ClanMember mem = ClanMember.deserialize(m, result);
