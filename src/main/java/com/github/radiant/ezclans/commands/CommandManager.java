@@ -50,6 +50,7 @@ public class CommandManager {
 		pcommands.put("online", OnlineCommand.class);
 		pcommands.put("loginmessage", LoginmessageCommand.class);
 		pcommands.put("color", ColorCommand.class);
+		pcommands.put("player", PlayerCommand.class);
 		commands.put("clan", pcommands);
 		acommands.put("storage", StorageAdminCommand.class);
 		acommands.put("settag", SettagAdminCommand.class);

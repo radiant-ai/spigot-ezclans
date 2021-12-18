@@ -72,6 +72,7 @@ public class HelpCommand extends ACommand {
 			break;
 		default:
 			sender.sendMessage(Lang.getLang("help_create"));
+			sender.sendMessage(Lang.getLang("help_player"));
 			sender.sendMessage(Lang.getLang("help_invite"));
 			sender.sendMessage(Lang.getLang("help_kick"));
 			sender.sendMessage(Lang.getLang("help_leave"));

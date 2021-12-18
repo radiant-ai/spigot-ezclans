@@ -1,13 +1,7 @@
 package com.github.radiant.ezclans.core;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.TreeMap;
-import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -99,8 +93,9 @@ public class Clans {
 	}
 	
 	public static ClanMember getMemberByName(String name) {
+		name = name.toLowerCase(Locale.ROOT);
 		for (Entry<UUID, ClanMember> entry : members.entrySet()) {
-	        if (entry.getValue().getName().equals(name)) {
+	        if (entry.getValue().getName().toLowerCase(Locale.ROOT).equals(name)) {
 	            return entry.getValue();
 	        }
 	    }

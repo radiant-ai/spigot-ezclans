@@ -351,6 +351,8 @@ public class Clan implements Cloneable, ConfigurationSerializable {
 			}
 		}
 		result.put("storage",stacks);
+		result.put("color", color);
+		result.put("loginMessage", loginMessage);
 		return result;
 	}
 	

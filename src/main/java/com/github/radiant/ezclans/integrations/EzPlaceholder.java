@@ -188,7 +188,7 @@ public class EzPlaceholder extends PlaceholderExpansion {
 				if (!color.isEmpty())
 					return String.format("{%s}◆", member.getClan().getColor());
 				else
-					return "";
+					return "◆";
 			}
 			else {
 				return "";
