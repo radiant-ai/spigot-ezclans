@@ -5,6 +5,7 @@ import com.github.radiant.ezclans.core.ClanMember;
 import com.github.radiant.ezclans.core.Clans;
 import com.github.radiant.ezclans.lang.Lang;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerLoginEvent;
@@ -21,7 +22,8 @@ public class LoginEvent implements Listener {
                 message = Lang.colorString("&f["+tag+"&f]:&r "+message);
                 String finalMessage = message;
                 Bukkit.getScheduler().runTaskLater(EzClans.plugin, () -> {
-                    if (Bukkit.getPlayer(member.getUuid()).isOnline()) {
+                    Player player = Bukkit.getPlayer(member.getUuid());
+                    if (player != null && player.isOnline()) {
                         event.getPlayer().sendMessage(finalMessage);
                     }
                 }, 30);
