@@ -2,4 +2,4 @@
 
 Add clans to your minercaft server!
 
-Developed for: [Artale.org](https://artale.org/)
+Developed for: [MILKY-WAU.FUN](https://milky-way.fun)
