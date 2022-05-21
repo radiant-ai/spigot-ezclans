@@ -16,7 +16,7 @@ public class BackupTask implements Runnable {
 	}
 	@Override
 	public void run() {
-		Bukkit.getLogger().info("[EzClans] Running backup!");
+		//Bukkit.getLogger().info("[EzClans] Running backup!");
 		try {
 			EzClans.db.saveClans(Clans.getClans());
 		}
@@ -27,11 +27,11 @@ public class BackupTask implements Runnable {
 		if (toBackup.exists()) {
 			try {
 				String newPath = toBackup.getParent()+File.separator+"backups"+File.separator+toBackup.getName()+(new Date()).getTime();
-				Bukkit.getLogger().info("[EzClans] Saving to: "+newPath);
+				//Bukkit.getLogger().info("[EzClans] Saving to: "+newPath);
 				File target = new File(newPath);
 				target.getParentFile().mkdirs();
 				Files.copy(toBackup.toPath(), target.toPath());
-				Bukkit.getLogger().info("[EzClans] Backup success!");
+				//Bukkit.getLogger().info("[EzClans] Backup success!");
 			}
 			catch (Exception e) {
 				Bukkit.getLogger().severe("[EzClans] Backup fail!");

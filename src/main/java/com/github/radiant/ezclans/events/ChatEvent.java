@@ -1,5 +1,7 @@
 package com.github.radiant.ezclans.events;
 
+import io.papermc.paper.event.player.AsyncChatEvent;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -17,10 +19,11 @@ public class ChatEvent implements Listener {
 		this.plugin = plugin;
 	}
 	
-	@EventHandler(priority = EventPriority.HIGHEST)
-	public void onPlayerChat(AsyncPlayerChatEvent e) {
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void onPlayerChat(AsyncChatEvent e) {
 		Player p = e.getPlayer();
-		String message = e.getMessage();
+		var plainSerializer = PlainTextComponentSerializer.plainText();
+		var message = plainSerializer.serialize(e.message());
 		if (message.charAt(0) == ';') {
 			e.setCancelled(true);
 			Bukkit.getScheduler().callSyncMethod(plugin, () -> p.performCommand("clan chat "+message.substring(1)));
