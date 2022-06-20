@@ -169,6 +169,17 @@ public class Clan implements Cloneable, ConfigurationSerializable {
 		members.add(member);
 		return member;
 	}
+
+	public boolean addMember(ClanMember clanMember) {
+		if (clanMember.getUuid().equals(leader.getUuid())) {
+			return false;
+		}
+		if (members.stream().anyMatch(m -> m.getUuid().equals(clanMember.getUuid()))) {
+			return false;
+		}
+		members.add(clanMember);
+		return true;
+	}
 	
 	public ClanMember getMemberByName(String name) {
 		return members.stream().filter(m -> m.getName().equals(name)).findAny().orElse(null);
