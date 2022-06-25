@@ -11,7 +11,7 @@ import com.github.radiant.ezclans.core.Clans;
 public class PvpEvent implements Listener {
 	
 	//If player receives damage from another player and they are both in same clan and they have clan pvp disabled, cancel the damage.
-	@EventHandler(priority = EventPriority.HIGH)
+	@EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
 	public void EntityDamageByEntityEvent(final EntityDamageByEntityEvent event) {
 		if (!(event.getEntity() instanceof Player attackedPlayer)) {
 			return;
@@ -41,6 +41,9 @@ public class PvpEvent implements Listener {
 	private boolean shouldCancelPvp(Player player1, Player player2) {
 		var member1 = Clans.getMember(player1.getUniqueId());
 		var member2 = Clans.getMember(player2.getUniqueId());
+		if (member1 == null || member2 == null) {
+			return false;
+		}
 		if (member1.getClan() != member2.getClan()) {
 			return false;
 		}

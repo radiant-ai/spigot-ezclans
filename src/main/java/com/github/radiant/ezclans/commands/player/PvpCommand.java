@@ -28,6 +28,7 @@ public class PvpCommand extends ACommand {
 		ClanMember member = Clans.getMember(player.getUniqueId());
 		if (member == null) {
 			sender.sendMessage(Lang.getLang("not_in_clan"));
+			return false;
 		}
 		boolean newPvp = !member.isClanPvp();
 		member.setClanPvp(newPvp);
