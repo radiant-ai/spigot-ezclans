@@ -42,7 +42,7 @@ public class HomeAdminCommand extends ACommand {
 		if (clan != null) {
 			Location home = clan.getHome();
 			if (home != null) {
-				p.teleport(home);
+				p.teleportAsync(home);
 			}
 			else {
 				throw new CommandException(Lang.getLang("no_clanhome"));

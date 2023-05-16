@@ -31,6 +31,10 @@ public class PvpEvent implements Listener {
 			return;
 		}
 
+		if (attacker == attackedPlayer) {
+			return;
+		}
+
 		if (!shouldCancelPvp(attacker, attackedPlayer)) {
 			return;
 		}

@@ -16,7 +16,7 @@ public class HomeTask implements Runnable {
 	@Override
 	public void run() {
 		if (player.isOnline()) {
-			player.teleport(location);
+			player.teleportAsync(location);
 			Pendings.removeTeleportPending(player.getUniqueId());
 		}
 	}
