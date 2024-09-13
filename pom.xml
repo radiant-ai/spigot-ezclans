@@ -24,7 +24,7 @@
                 <artifactId>maven-jar-plugin</artifactId>
                 <version>2.3.1</version>
                 <configuration>
-                    <outputDirectory>D:/minecraft_dev/milky-way-copy/plugins</outputDirectory>
+                    <outputDirectory>D:/minecraft_dev/milky-copy/plugins</outputDirectory>
                 </configuration>
             </plugin>
         </plugins>

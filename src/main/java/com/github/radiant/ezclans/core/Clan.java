@@ -1,18 +1,9 @@
 package com.github.radiant.ezclans.core;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.SerializableAs;
 import org.bukkit.entity.HumanEntity;
@@ -354,14 +345,19 @@ public class Clan implements Cloneable, ConfigurationSerializable {
 		result.put("home", home==null ? "null" : home);
 		result.put("bank", ""+bank);
 		result.put("level", ""+level);
-		ItemStack[] stacks = storage.getContents();
-		for (int i = 0; i < stacks.length; i++) {
-			if (!InventoryUtils.testSavable(stacks[i])) {
-				stacks[i] = null;
+		List<ItemStack> stacks = Arrays.asList(storage.getContents());
+		for (int i = 0; i < stacks.size(); i++) {
+			if (!InventoryUtils.testSavable(stacks.get(i))) {
+				stacks.set(i, null);
 				storage.setItem(i, null);
 			}
 		}
-		result.put("storage",stacks);
+		if (Clans.useLegacySerialization) {
+			saveStorageLegacy(result, stacks);
+		}
+		else {
+			saveStorage(result, stacks);
+		}
 		result.put("color", color);
 		result.put("loginMessage", loginMessage);
 		return result;
@@ -406,7 +402,13 @@ public class Clan implements Cloneable, ConfigurationSerializable {
 		else if (level==3) {
 			inv = Bukkit.createInventory(null, 54, storageName);
 		}
-		ArrayList<ItemStack> stacks = (ArrayList<ItemStack>) map.get("storage");
+		List<ItemStack> stacks;
+		if (Clans.useLegacySerialization) {
+			stacks = loadStorageLegacy(map);
+		}
+		else {
+			stacks = loadStorage(map);
+		}
 		if (stacks != null) {
 			for (int i = 0; i<stacks.size() && i<inv.getSize(); i++) {
 				inv.setItem(i, stacks.get(i));
@@ -425,5 +427,36 @@ public class Clan implements Cloneable, ConfigurationSerializable {
 		result.setMembers(memberList);
 		result.setLeader(leaderMember);
 		return result;
+	}
+
+	private static void saveStorageLegacy(Map<String, Object> map, List<ItemStack> stacks) {
+		map.put("storage",stacks);
+	}
+
+	private static List<ItemStack> loadStorageLegacy(Map<String, Object> map) {
+		Object storage = map.get("storage");
+		if (storage == null) {
+			return List.of();
+		}
+		return (List<ItemStack>) storage;
+	}
+
+	private static void saveStorage(Map<String, Object> map, List<ItemStack> stacks) {
+		map.put("storage", stacks.stream()
+				.map(stack -> stack == null ? null : stack.serializeAsBytes())
+				.map(bytes -> bytes == null ? null : Base64.getEncoder()
+						.encodeToString(bytes)).toList());
+	}
+
+	private static List<ItemStack> loadStorage(Map<String, Object> map) {
+		Object storage = map.get("storage");
+		if (storage == null) {
+			return List.of();
+		}
+		List<String> storageBase64 = (List<String>) storage;
+		return storageBase64.stream()
+                .map(base64 -> base64 == null ? null : Base64.getDecoder().decode(base64))
+                .map(bytes -> bytes == null ? null : ItemStack.deserializeBytes(bytes))
+                .toList();
 	}
 }

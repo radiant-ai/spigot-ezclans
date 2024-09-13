@@ -27,6 +27,7 @@ public class Clans {
 	public static int sethomeCost;
 	public static String clanChatFormat = "&7[&2ClanChat&7] &r&c%s&r: %s";
 	public static int clansPerPage = 8;
+	public static boolean useLegacySerialization;
 	
 	public static void loadConfig(FileConfiguration config) {
 		clanCost = (List<Integer>) config.getList("clan_creation_cost");
@@ -36,6 +37,7 @@ public class Clans {
 		sethomeCost = config.getInt("clan_sethome_cost");
 		clanChatFormat = config.getString("clan_msg");
 		maxLoginmessageLength = config.getInt("clan_loginmessage_max");
+		useLegacySerialization = config.getBoolean("use_legacy_serialization", false);
 	}
 	
 	public static void addClan(Clan c) {
