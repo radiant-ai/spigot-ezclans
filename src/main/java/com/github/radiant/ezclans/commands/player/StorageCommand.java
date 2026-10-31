@@ -24,6 +24,9 @@ public class StorageCommand extends ACommand {
 		if (!consoleExecutable && !(sender instanceof Player)) {
 			throw new CommandException(Lang.getLang("must_be_player"));
 		}
+		if (!Clans.storageEnabled) {
+			throw new CommandException(Lang.getLang("storage_disabled"));
+		}
 		Player p = (Player) sender;
 		ClanMember member = Clans.getMember(p.getUniqueId());
 		if (member == null) {

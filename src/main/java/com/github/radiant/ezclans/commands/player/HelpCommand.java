@@ -5,6 +5,7 @@ import org.bukkit.command.CommandSender;
 import com.github.radiant.ezclans.EzClans;
 import com.github.radiant.ezclans.commands.ACommand;
 import com.github.radiant.ezclans.commands.CommandException;
+import com.github.radiant.ezclans.core.Clans;
 import com.github.radiant.ezclans.lang.Lang;
 
 public class HelpCommand extends ACommand {
@@ -57,7 +58,9 @@ public class HelpCommand extends ACommand {
 			sender.sendMessage(Lang.getLang("help_online"));
 			sender.sendMessage(Lang.getLang("help_balance"));
 			sender.sendMessage(Lang.getLang("help_upgrade"));
-			sender.sendMessage(Lang.getLang("help_storage"));
+			if (Clans.storageEnabled) {
+				sender.sendMessage(Lang.getLang("help_storage"));
+			}
 			sender.sendMessage(Lang.getLang("help_color"));
 			sender.sendMessage(Lang.getLang("help_loginmessage"));
 			break;
