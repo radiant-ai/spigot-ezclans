@@ -43,6 +43,9 @@ public class PvpEvent implements Listener {
 	}
 
 	private boolean shouldCancelPvp(Player player1, Player player2) {
+		if (!Clans.clanPvpProtection) {
+			return false;
+		}
 		var member1 = Clans.getMember(player1.getUniqueId());
 		var member2 = Clans.getMember(player2.getUniqueId());
 		if (member1 == null || member2 == null) {

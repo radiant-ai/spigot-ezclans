@@ -19,3 +19,4 @@ clan_msg: "&7[&2ClanChat&7] &r&a%s&r: &a%s"
 clan_loginmessage_max: 100
 use_legacy_serialization: false
 storage_enabled: true
+clan_pvp_protection: true

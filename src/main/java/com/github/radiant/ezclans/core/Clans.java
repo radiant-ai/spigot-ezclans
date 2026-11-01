@@ -29,6 +29,7 @@ public class Clans {
 	public static int clansPerPage = 8;
 	public static boolean useLegacySerialization;
 	public static boolean storageEnabled = true;
+	public static boolean clanPvpProtection = true;
 	
 	public static void loadConfig(FileConfiguration config) {
 		clanCost = (List<Integer>) config.getList("clan_creation_cost");
@@ -40,6 +41,7 @@ public class Clans {
 		maxLoginmessageLength = config.getInt("clan_loginmessage_max");
 		useLegacySerialization = config.getBoolean("use_legacy_serialization", false);
 		storageEnabled = config.getBoolean("storage_enabled", true);
+		clanPvpProtection = config.getBoolean("clan_pvp_protection", true);
 	}
 	
 	public static void addClan(Clan c) {

@@ -66,7 +66,9 @@ public class HelpCommand extends ACommand {
 			break;
 		case 2:
 			sender.sendMessage(Lang.getLang("help_rename"));
-			sender.sendMessage(Lang.getLang("help_pvp"));
+			if (Clans.clanPvpProtection) {
+				sender.sendMessage(Lang.getLang("help_pvp"));
+			}
 			sender.sendMessage(Lang.getLang("help_home"));
 			sender.sendMessage(Lang.getLang("help_sethome"));
 			sender.sendMessage(Lang.getLang("help_info"));

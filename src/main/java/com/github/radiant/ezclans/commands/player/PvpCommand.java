@@ -24,6 +24,9 @@ public class PvpCommand extends ACommand {
 		if (!consoleExecutable && !(sender instanceof Player)) {
 			throw new CommandException(Lang.getLang("must_be_player"));
 		}
+		if (!Clans.clanPvpProtection) {
+			throw new CommandException(Lang.getLang("clan_pvp_disabled"));
+		}
 		Player player = (Player) sender;
 		ClanMember member = Clans.getMember(player.getUniqueId());
 		if (member == null) {
